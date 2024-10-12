@@ -4,6 +4,25 @@
   
   
   <entry>
+    <title>test</title>
+    <link href="/2024/10/12/test/"/>
+    <url>/2024/10/12/test/</url>
+    
+    <content type="html"><![CDATA[<p>test<br><a href="/download/testdownload">test</a></p><p><a href="/download/testdownload"download>testdownload</a></p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>linux</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>learning note</title>
     <link href="/2024/10/11/multilepnote/"/>
     <url>/2024/10/11/multilepnote/</url>
