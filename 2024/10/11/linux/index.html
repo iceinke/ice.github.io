@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://iceinke.github.io/img/post2.jpeg">
 <meta property="article:published_time" content="2024-10-11T13:13:02.830Z">
-<meta property="article:modified_time" content="2024-10-12T02:49:10.198Z">
+<meta property="article:modified_time" content="2024-10-12T08:42:56.178Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="linux">
 <meta name="twitter:card" content="summary_large_image">
@@ -74,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"iceinke.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":250,"cursorChar":" ","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":1},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+    var CONFIG = {"hostname":"iceinke.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":250,"cursorChar":" ","loop":false,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":6},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -529,14 +529,14 @@
 <li>同样先按下ctrl+v键进入可视块模式，然后使用上下左右键选中你想要删除空格的多行代码以及前面的空格。</li>
 <li>然后按下del键即可删除选中的空格1。</li>
 </ol>
-<p>chmod -R 755 public&#x2F;  设置文件夹及子文件夹的权限为rwxr-xr-x<br>r：read，可读取此文件的内容，即可以打开文件；<br>w：write，可编辑此文件的内容，如可以增加、删除、更改文件内容；<br>x：execute，可以执行此文件。<br>￼<img src="/4.png" srcset="/img/loading.gif" lazyload alt="1"></p>
+<p>chmod -R 755 public&#x2F;  设置文件夹及子文件夹的权限为rwxr-xr-x<br>r：read，可读取此文件的内容，即可以打开文件；<br>w：write，可编辑此文件的内容，如可以增加、删除、更改文件内容；<br>x：execute，可以执行此文件。<br>￼<img src="/postfigure/linux/4.png" srcset="/img/loading.gif" lazyload alt="1"></p>
 <p>将cds上的root数据文件拷到服务器上<br>xrdcp -d 1 -f root:&#x2F;&#x2F;xrootd-cms.infn.it&#x2F;&#x2F;</p>
-<p>.h 头文件可以用crab那一步的cmsRun 产生的mymultilep.root文件获取<br>root &#x2F;path&#x2F;***.root<br>.ls      &#x2F;&#x2F;mkcands<br>mkcands-&gt;cd()<br>.ls      &#x2F;&#x2F;X_data<br>X_data-&gt;MakeClass(“myntuple”)<br><img src="/Attaching.png" srcset="/img/loading.gif" lazyload alt="2"></p>
+<p>.h 头文件可以用crab那一步的cmsRun 产生的mymultilep.root文件获取<br>root &#x2F;path&#x2F;***.root<br>.ls      &#x2F;&#x2F;mkcands<br>mkcands-&gt;cd()<br>.ls      &#x2F;&#x2F;X_data<br>X_data-&gt;MakeClass(“myntuple”)<br><img src="/postfigure/linux/Attaching.png" srcset="/img/loading.gif" lazyload alt="2"></p>
 <p>Lpc会有时用不了有些命令<br>source &#x2F;cvmfs&#x2F;cms.cern.ch&#x2F;cmsset_default.sh<br>source &#x2F;cvmfs&#x2F;cms.cern.ch&#x2F;crab3&#x2F;crab.sh</p>
 <p>修改路径；清除；<br>scramv1 b  ProjectRename<br>scramv1 b clean<br>scramv1 b  </p>
 <p>删除重复行<br>cat hh.txt | sort -g -k7 | uniq</p>
 <p>disown -h %1	无敌的代码，我愿称之为神！后台挂起序号1的job，并且断线不发送停止代码，之前后台挂着，断线就会结束job</p>
-<p><img src="/linux.png" srcset="/img/loading.gif" lazyload alt="Alt text"><br>本文参考这本书，如果有疑问请自行下载查阅<br><a target="_blank" rel="noopener" href="https://zh.z-library.se/book/15316978/c14dce/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8Eshell%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B%E5%A4%A7%E5%85%A8-%E7%AC%AC3%E7%89%88-%E5%9B%BE%E7%81%B5%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%9B%E4%B9%A6.html">linux命令行与shell脚本编程大全</a></p>
+<p><img src="/postfigure/linux/linux.png" srcset="/img/loading.gif" lazyload alt="linux命令行与shell脚本编程大全"><br>本文参考这本书，如果有疑问请自行下载查阅<br><a target="_blank" rel="noopener" href="https://zh.z-library.se/book/15316978/c14dce/linux%E5%91%BD%E4%BB%A4%E8%A1%8C%E4%B8%8Eshell%E8%84%9A%E6%9C%AC%E7%BC%96%E7%A8%8B%E5%A4%A7%E5%85%A8-%E7%AC%AC3%E7%89%88-%E5%9B%BE%E7%81%B5%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E4%B8%9B%E4%B9%A6.html">linux命令行与shell脚本编程大全</a></p>
 <hr>
 <p>END</p>
 <div style="text-align: right;"> written by zhuf </div>
@@ -574,7 +574,7 @@
 </tr>
 </tbody></table>
 <ul>
-<li><p>文件权限<br>linux的每个文件都有User,Group,Others三种身份的权限，<code>ls -al</code>查看文件权限<br><img src="/image-7.png" srcset="/img/loading.gif" lazyload alt="Alt text"><img src="/image-8.png" srcset="/img/loading.gif" lazyload alt="Alt text"><br>文件类型  [d] 目录  [-]文件 [l]链接文件 </p>
+<li><p>文件权限<br>linux的每个文件都有User,Group,Others三种身份的权限，<code>ls -al</code>查看文件权限<br><img src="/postfigure/linux/image-7.png" srcset="/img/loading.gif" lazyload alt="Alt text"><img src="/postfigure/linux/image-8.png" srcset="/img/loading.gif" lazyload alt="Alt text"><br>文件类型  [d] 目录  [-]文件 [l]链接文件 </p>
 </li>
 <li><p>改变文件属性</p>
 <ul>
@@ -644,46 +644,6 @@
 
 
               
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Linux learning note</div>
-      <div>http://iceinke.github.io/2024/10/11/linux/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>Feng Zhu</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2024年10月11日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
-            
-              <a class="print-no-link" target="_blank" href="https://creativecommons.org/publicdomain/zero/1.0/">
-                <span class="hint--top hint--rounded" aria-label="CC0 - 无版权">
-                  <i class="iconfont icon-cc-zero"></i>
-                </span>
-              </a>
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
-
-
 
               
                 <div class="post-prevnext my-3">
