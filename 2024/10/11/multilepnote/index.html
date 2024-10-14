@@ -21,25 +21,25 @@
   
     <meta name="description" content="本文涉及较为深入的高能物理的代码解析和理论知识。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="learning note">
+<meta property="og:title" content="multilep learning note">
 <meta property="og:url" content="http://iceinke.github.io/2024/10/11/multilepnote/index.html">
 <meta property="og:site_name" content="Feng Zhu&#39;s Blog">
 <meta property="og:description" content="本文涉及较为深入的高能物理的代码解析和理论知识。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://iceinke.github.io/postfigure/multilepnote/image-20240914210956761.png">
+<meta property="og:image" content="http://iceinke.github.io/img/post5.jpg">
 <meta property="article:published_time" content="2024-10-11T13:13:02.842Z">
-<meta property="article:modified_time" content="2024-10-12T15:05:34.126Z">
+<meta property="article:modified_time" content="2024-10-14T06:24:06.006Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="multilep">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://iceinke.github.io/postfigure/multilepnote/image-20240914210956761.png">
+<meta name="twitter:image" content="http://iceinke.github.io/img/post5.jpg">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>learning note - Feng Zhu&#39;s Blog</title>
+  <title>multilep learning note - Feng Zhu&#39;s Blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -169,7 +169,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle">learning note</span>
+            <span id="subtitle">multilep learning note</span>
           
         </div>
 
@@ -226,12 +226,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">learning note</h1>
+            <h1 id="seo-header">multilep learning note</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年10月12日
+                    本文最后更新于 2024年10月14日
                   
                 
               </p>
@@ -239,7 +239,10 @@
             
               <div class="markdown-body">
                 
-                <h2 id="0-序"><a href="#0-序" class="headerlink" title="0-序"></a>0-序</h2><p>终端中的vim编辑器面对这样的大型代码会异常难用，特别是像lpc这种延迟很高的服务器，强烈建议使用vscode和各种插件方便你的工作！<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">下载vscode</a> </p>
+                <blockquote>
+<p><a href="/download/multilepnote.pdf">下载文章</a></p>
+</blockquote>
+<h2 id="0-序"><a href="#0-序" class="headerlink" title="0-序"></a>0-序</h2><p>终端中的vim编辑器面对这样的大型代码会异常难用，特别是像lpc这种延迟很高的服务器，强烈建议使用vscode和各种插件方便你的工作！<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">下载vscode</a> </p>
 <p><img src="/postfigure/multilepnote/image-18.png" srcset="/img/loading.gif" lazyload> </p>
 <p>这三个插件可以ssh登录到集群，推荐登录hepthu集群体验会很好，下面的插件可以选择安装</p>
 <p><img src="/postfigure/multilepnote/image.png" srcset="/img/loading.gif" lazyload alt="" style="zoom:150%;" /><img src="/postfigure/multilepnote/image-1.png" srcset="/img/loading.gif" lazyload></p>
@@ -293,7 +296,7 @@
 <p>.C与.h文件可以通过mymultilep.root生成一个空文件，在里面填入你想要输出的数据</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ root -l mymultilep.root<br>.<span class="hljs-built_in">ls</span>   //mkcands<br>mkcands-&gt;<span class="hljs-built_in">cd</span>()<br>.<span class="hljs-built_in">ls</span>   //X_data<br>X_data-&gt;MakeClass(<span class="hljs-string">&quot;myntuple&quot;</span>)<br></code></pre></td></tr></table></figure>
 
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">//会生成这样的.C文件和一个包含你在之前.cc里面定义过的所有变量的.h文件</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> myntuple_cxx</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;myntuple.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TH2.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TStyle.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TCanvas.h&gt;</span></span><br><span class="hljs-type">void</span> <span class="hljs-title function_">myntuple::Loop</span><span class="hljs-params">()</span><br>&#123;<br><span class="hljs-keyword">if</span> (fChain == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br>Long64_t nentries = fChain-&gt;GetEntriesFast();<br>Long64_t nbytes = <span class="hljs-number">0</span>, nb = <span class="hljs-number">0</span>;<br><br>TFile* myhbk = new TFile (<span class="hljs-string">&quot;myhbk.root&quot;</span>,<span class="hljs-string">&quot;recreate&quot;</span>);<span class="hljs-comment">//创建一个root，将所有你想画出来的直方图都放进去</span><br>TH1F* mumumass = new TH1F(<span class="hljs-string">&quot;mumumass&quot;</span>,<span class="hljs-string">&quot;mumumass&quot;</span>,<span class="hljs-number">5000</span>,<span class="hljs-number">0</span>,<span class="hljs-number">25</span>);<span class="hljs-comment">//创建一个一维直方图</span><br>TH1F* mumumasserr = new TH1F(<span class="hljs-string">&quot;mumumasserr&quot;</span>,<span class="hljs-string">&quot;mumumasserr&quot;</span>,<span class="hljs-number">5000</span>,<span class="hljs-number">0</span>,<span class="hljs-number">25</span>);<br><span class="hljs-keyword">for</span> (Long64_t jentry=<span class="hljs-number">0</span>; jentry&lt;nentries;jentry++) &#123;<span class="hljs-comment">//对每个事例进行loop</span><br>  Long64_t ientry = LoadTree(jentry);<br>  <span class="hljs-keyword">if</span> (ientry &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<br>  nb = fChain-&gt;GetEntry(jentry);   nbytes += nb;<br>  <span class="hljs-comment">// if (Cut(ientry) &lt; 0) continue;</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> myi = <span class="hljs-number">0</span>; myi &lt; mumuonlyMass-&gt;size(); myi++) &#123;<span class="hljs-comment">//对一个事例中的mumu进行loop</span><br>     mumumass-&gt;Fill((*mumuonlyMass)[myi]);<span class="hljs-comment">//将你的变量填入到你定义的直方图中</span><br>    mumumasserr-&gt;Fill((*mumuonlyMassErr)[myi]);<br>  &#125;<br>&#125;<br><span class="hljs-keyword">if</span> (jentry%<span class="hljs-number">10000</span> == <span class="hljs-number">0</span>) <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;I am running &quot;</span> &lt;&lt; jentry &lt;&lt; <span class="hljs-string">&quot; th entries out of &quot;</span> &lt;&lt; nentries &lt;&lt; <span class="hljs-string">&quot; total entries&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>myhbk-&gt;Write(); <span class="hljs-comment">//这一句就能将所有你填入的直方图保存下来</span><br>&#125;<span class="hljs-comment">//end</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">//会生成这样的.C文件和一个包含你在之前.cc里面定义过的所有变量的.h文件</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> myntuple_cxx</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;myntuple.h&quot;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TH2.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TStyle.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;TCanvas.h&gt;</span></span><br><span class="hljs-type">void</span> <span class="hljs-title function_">myntuple::Loop</span><span class="hljs-params">()</span><br>&#123;<br><span class="hljs-keyword">if</span> (fChain == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;<br>Long64_t nentries = fChain-&gt;GetEntriesFast();<br>Long64_t nbytes = <span class="hljs-number">0</span>, nb = <span class="hljs-number">0</span>;<br><br>TFile* myhbk = new TFile (<span class="hljs-string">&quot;myhbk.root&quot;</span>,<span class="hljs-string">&quot;recreate&quot;</span>);<span class="hljs-comment">//创建一个root，将所有你想画出来的直方图都放进去</span><br>TH1F* mumumass = new TH1F(<span class="hljs-string">&quot;mumumass&quot;</span>,<span class="hljs-string">&quot;mumumass&quot;</span>,<span class="hljs-number">5000</span>,<span class="hljs-number">0</span>,<span class="hljs-number">25</span>);<span class="hljs-comment">//创建一个一维直方图</span><br>TH1F* mumumasserr = new TH1F(<span class="hljs-string">&quot;mumumasserr&quot;</span>,<span class="hljs-string">&quot;mumumasserr&quot;</span>,<span class="hljs-number">5000</span>,<span class="hljs-number">0</span>,<span class="hljs-number">25</span>);<br><span class="hljs-keyword">for</span> (Long64_t jentry=<span class="hljs-number">0</span>; jentry&lt;nentries;jentry++) &#123;<span class="hljs-comment">//对每个事例进行loop</span><br>  Long64_t ientry = LoadTree(jentry);<br>  <span class="hljs-keyword">if</span> (ientry &lt; <span class="hljs-number">0</span>) <span class="hljs-keyword">break</span>;<br>  nb = fChain-&gt;GetEntry(jentry);   nbytes += nb;<br>  <span class="hljs-comment">// if (Cut(ientry) &lt; 0) continue;</span><br>  <span class="hljs-keyword">for</span> (<span class="hljs-type">unsigned</span> <span class="hljs-type">int</span> myi = <span class="hljs-number">0</span>; myi &lt; mumuonlyMass-&gt;size(); myi++) &#123;<span class="hljs-comment">//对一个事例中的mumu进行loop</span><br>     mumumass-&gt;Fill((*mumuonlyMass)[myi]);<span class="hljs-comment">//将你的变量填入到你定义的直方图中</span><br>    mumumasserr-&gt;Fill((*mumuonlyMassErr)[myi]);<br>  &#125;<br><span class="hljs-keyword">if</span> (jentry%<span class="hljs-number">10000</span> == <span class="hljs-number">0</span>) <span class="hljs-built_in">std</span>::<span class="hljs-built_in">cout</span> &lt;&lt; <span class="hljs-string">&quot;I am running &quot;</span> &lt;&lt; jentry &lt;&lt; <span class="hljs-string">&quot; th entries out of &quot;</span> &lt;&lt; nentries &lt;&lt; <span class="hljs-string">&quot; total entries&quot;</span> &lt;&lt; <span class="hljs-built_in">std</span>::<span class="hljs-built_in">endl</span>;<br>&#125;<br>myhbk-&gt;Write(); <span class="hljs-comment">//这一句就能将所有你填入的直方图保存下来</span><br>&#125;<span class="hljs-comment">//end</span><br></code></pre></td></tr></table></figure>
 
 <p>Tips:这里需要说明几个概念。nentries可以看作是对撞事例的编号，所以第一个for循环是为了对所用的对撞事例进行循环的，而第二个for循环是对一次事例中的<code>mumuonlyMass-&gt;size()</code>进行循环，这里取的编号是mumu对的编号，也就是对所有的$\mu$子对进行循环。在之后你还会尝试对单个$\mu$子进行操作，逻辑也是如此。<br><img src="/postfigure/multilepnote/IMG_0585.jpeg" srcset="/img/loading.gif" lazyload></p>
 <p>写好myntuple.C之后，需要进行编译（这里有一个trick但我忘记了</p>
