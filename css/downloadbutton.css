@@ -2,8 +2,8 @@
     display: inline-block;
     padding: 10px 20px;
     font-size: 14px;
-    color: rgb(181, 96, 96);
-    background-color: #fffb00;
+    color: white;
+    background-color: #007BFF;
     text-align: center;
     text-decoration: none;
     border-radius: 5px;
@@ -12,7 +12,7 @@
 }
 
 .download-button:hover {
-    background-color: #313d5c;
+    background-color: #3d75b0;
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
     transform: translateY(-1px);
 }
