@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://iceinke.github.io/img/post13.jpg">
 <meta property="article:published_time" content="2024-11-28T04:16:27.498Z">
-<meta property="article:modified_time" content="2024-11-28T04:58:37.400Z">
+<meta property="article:modified_time" content="2024-12-30T15:18:23.422Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -230,7 +230,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年11月28日
+                    本文最后更新于 2024年12月30日
                   
                 
               </p>
@@ -241,52 +241,58 @@
                 <link rel="stylesheet" href="/css/downloadbutton.css">
 
 <p><a href="/download/roofit_manual.pdf" class="download-button">下载文章</a><br><a href="/download/RooFit_Users_Manual_v2.9.pdf" class="download-button">RooFit Manual</a></p>
-<h2 id="0-安装和设置roofit"><a href="#0-安装和设置roofit" class="headerlink" title="0 安装和设置roofit"></a>0 安装和设置roofit</h2><h3 id="0-1-安装root和roofit"><a href="#0-1-安装root和roofit" class="headerlink" title="0.1 安装root和roofit"></a>0.1 安装root和roofit</h3><p>roofit库是标准root发行版的一部分，并且预编译在二进制发行版中，可以通过<code>root.cern.ch</code>获取。如果您从源代码发行版编译 ROOT，则必须在运行 configure 时使用标志 –enable-roofit</p>
-<h3 id="0-2-设置交互式root环境"><a href="#0-2-设置交互式root环境" class="headerlink" title="0.2 设置交互式root环境"></a>0.2 设置交互式root环境</h3><p>只要在命令行引用了 RooFit 类之一，ROOT 就会自动加载 RooFit 库 libRooFitCore 和 libRooFit。方便起见，建议你ROOT登录脚本中添加下面的命令<code>using namespace RooFit;</code>，这样你就能在命令行中使用RooFit命名空间中的辅助函数了。这个命令也会自动加载RooFit库。这篇指导的所有例子都是建立在你已经加载RooFit命名空间的基础上的。  </p>
+<h2 id="1-安装和设置roofit"><a href="#1-安装和设置roofit" class="headerlink" title="1 安装和设置roofit"></a>1 安装和设置roofit</h2><h3 id="1-1-安装root和roofit"><a href="#1-1-安装root和roofit" class="headerlink" title="1.1 安装root和roofit"></a>1.1 安装root和roofit</h3><p>roofit库是标准root发行版的一部分，并且预编译在二进制发行版中，可以通过<code>root.cern.ch</code>获取。如果您从源代码发行版编译 ROOT，则必须在运行 configure 时使用标志 –enable-roofit</p>
+<h3 id="1-2-设置交互式root环境"><a href="#1-2-设置交互式root环境" class="headerlink" title="1.2 设置交互式root环境"></a>1.2 设置交互式root环境</h3><p>只要在命令行引用了 RooFit 类之一，ROOT 就会自动加载 RooFit 库 libRooFitCore 和 libRooFit。方便起见，建议你ROOT登录脚本中添加下面的命令<code>using namespace RooFit;</code>，这样你就能在命令行中使用RooFit命名空间中的辅助函数了。这个命令也会自动加载RooFit库。这篇指导的所有例子都是建立在你已经加载RooFit命名空间的基础上的。  </p>
 <blockquote>
 <p><code>using namespace RooFit;</code></p>
 </blockquote>
-<h3 id="0-3-用ROOT与RooFit设置已编译的应用"><a href="#0-3-用ROOT与RooFit设置已编译的应用" class="headerlink" title="0.3 用ROOT与RooFit设置已编译的应用"></a>0.3 用ROOT与RooFit设置已编译的应用</h3><p>要用ROOT与RooFit设置一个独立的已编译应用程序，请使用标准ROOT推荐做法，但要在链接命令行中加入RooFit、RooFitCore 和 Minuit 库</p>
-<blockquote>
-<p>export CFLAGS&#x3D; `root-config –-cflags`<br>export LDFLAGS&#x3D;`root-config –-ldflags –glibs` -lRooFit –lRooFitCore -lMinuit<br>g++ ${CFLAGS} -c MyApp.cxx<br>g++ -o MyApp MyApp.o ${LDFLAGS}   </p>
-</blockquote>
-<h2 id="1-动手做"><a href="#1-动手做" class="headerlink" title="1 动手做"></a>1 动手做</h2><p>这部分会带你做简单的模型去拟合数据。目的是让你熟悉一些基本概念，并且能快速地做一些有用的事情。在接下来的小节中我们会更仔细地探索RooFit几个方面。</p>
-<h3 id="1-1-构建模型"><a href="#1-1-构建模型" class="headerlink" title="1.1 构建模型"></a>1.1 构建模型</h3><p>RooFit中一个关键概念是以面向对象的方式构建模型的。每个RooFit的类都有一个对应的数学对象：<code>RooRealVar</code>表示一个变量，<code>RooAbsReal</code>表示一个函数，<code>RooAbsPdf</code>表示一个概率密度函数（probability density function），等等。就算是最简单的数学函数也包含了很多对象——函数本身与其变量——RooFit模型也因此由许多对象组成。<br>下面这个例子可以说明：</p>
+<p>一般情况下你需要将你的程序写入到一个程序文件中，在这个程序开头你需要加入一些头文件和命名空间，这样你在使用<code>root yourprogm.C</code>的时候就能加载RooFit库库了</p>
+<h2 id="2-动手做"><a href="#2-动手做" class="headerlink" title="2 动手做"></a>2 动手做</h2><p>这部分会带你做简单的模型去拟合数据。目的是让你熟悉一些基本概念，并且能快速地做一些有用的事情。在接下来的小节中我们会更仔细地探索RooFit几个方面。</p>
+<h3 id="2-1-构建模型"><a href="#2-1-构建模型" class="headerlink" title="2.1 构建模型"></a>2.1 构建模型</h3><p>RooFit中一个关键概念是以面向对象的方式构建模型的。每个RooFit的类都有一个对应的数学对象：<code>RooRealVar</code>表示一个变量，<code>RooAbsReal</code>表示一个函数，<code>RooAbsPdf</code>表示一个概率密度函数（probability density function），等等。就算是最简单的数学函数也包含了很多对象——函数本身与其变量——RooFit模型也因此由许多对象组成。 </p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span> ;<br>RooRealVar <span class="hljs-title function_">mean</span><span class="hljs-params">(<span class="hljs-string">&quot;mean&quot;</span>,<span class="hljs-string">&quot;Mean of Gaussian&quot;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;<br>RooRealVar <span class="hljs-title function_">sigma</span><span class="hljs-params">(<span class="hljs-string">&quot;sigma&quot;</span>,<span class="hljs-string">&quot;Width of Gaussian&quot;</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;<br>RooGaussian <span class="hljs-title function_">gauss</span><span class="hljs-params">(<span class="hljs-string">&quot;gauss&quot;</span>,<span class="hljs-string">&quot;gauss(x,mean,sigma)&quot;</span>,x,mean,sigma)</span>;<br></code></pre></td></tr></table></figure>
-
- <center> 
-
-
-<p> <strong>example - 构建一个高斯分布的概率密度函数</strong><br> </center></p>
-<p><em>Note:对于一个函数来说，需要自变量x和参数，对于自变量来说你需要设定一个范围，也就是函数的定义域，而对于参数来说，因为你需要用这个函数去拟合一些数据，那么就不可能一开始就确定这个函数，而是给他一个大致的范围让他去拟合。</em></p>
+<h4 id="Note-1"><a href="#Note-1" class="headerlink" title="Note 1"></a>Note 1</h4><ul>
+<li><p>概率密度函数（Probability Density Function，PDF）是用于描述连续型随机变量的概率分布的函数。 随机变量 X 落在区间 [a, b] 的概率是：$P(a \leq X \leq b) &#x3D; \int_a^b f_X(x) , dx$，并且还需要满足归一性和非负性。</p>
+</li>
+<li><p>对于一个函数来说，需要自变量x和参数，对于自变量来说你需要设定一个范围，也就是函数的定义域，而对于参数来说，因为你需要用这个函数去拟合一些数据，那么就不可能一开始就确定这个函数，而是给他一个大致的范围让他去拟合，这个范围还需要根据你的拟合结果进行调整，也就是调参的过程。</p>
+</li>
+</ul>
 <p>在<code>gauss</code>用到的每个变量都用几个属性进行初始化：name, title, 范围和可选的初始值。用<code>RooRealVar</code>描述的变量有更多的属性在这个例子中没有展现出来，例如与变量关联的对称误差以及指定变量是常量还是浮动的标志。本质上，类<code>RooRealVar</code>收集所有与变量有关的属性。</p>
 <p>代码的最后一行创建了一个高斯分布的概率密度函数，由<code>RooGaussian</code>实现。类<code>RooGaussian</code>描述了所有概率密度函数的共同属性。PDF 高斯有一个名称和一个标题，就像变量对象一样，并通过构造函数中传递的引用关联到变量 x、mean 和 sigma。</p>
-<h3 id="1-2-模型可视化"><a href="#1-2-模型可视化" class="headerlink" title="1.2 模型可视化"></a>1.2 模型可视化</h3><p>通常我们最先想到的是看到这个模型。RooFit采取了比普通ROOT稍微正式一点的可视化方法。首先你需要定义一个“视图”，本质上是一个空的框架，包含<code>RooRealVar</code>中变量之一x作为横坐标轴，然后你要把你的模型gauss放进这个空白框架中，最后你再把这个视图画在ROOT TCanvas上：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">RooPlot* xframe = x.frame() ;  <span class="hljs-comment">//创建一个以x这个变量为坐标的空坐标图，这个会直接获取你之前设置的x变量的范围定义你的坐标的范围，这里就是 -10～10</span><br>gauss.plotOn(xframe) ;      <span class="hljs-comment">//将你之前创建的gauss函数画到你的坐标图中</span><br>xframe-&gt;Draw();             <span class="hljs-comment">//将你这个图通过TCanvas“打印”出来  </span><br></code></pre></td></tr></table></figure>
+<h3 id="2-2-模型可视化"><a href="#2-2-模型可视化" class="headerlink" title="2.2 模型可视化"></a>2.2 模型可视化</h3><p>通常我们最先想到的是看到这个模型。RooFit采取了比普通ROOT稍微正式一点的可视化方法。首先你需要定义一个“视图”，本质上是一个空的框架，包含<code>RooRealVar</code>中变量之一x作为横坐标轴，然后你要把你的模型gauss放进这个空白框架中，最后你再把这个视图画在ROOT TCanvas上：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">RooPlot* xframe = x.frame() ; <br>gauss.plotOn(xframe) ;      <br>xframe-&gt;Draw();            <br></code></pre></td></tr></table></figure>
 
-<center>
-![figure 1](/postfigure/roofit_manual/image-11.png)  
-<center>
-  figure 1 高斯pdf
-</center>
+<p><img src="/postfigure/roofit_manual/image-20241230194318643.png" srcset="/img/loading.gif" lazyload></p>
+<center>Figure 1 - 高斯pdf</center>
+
 
 <p>结果看图1。需要注意的是，在定义或创建一个视图的时候并不需要特意去设置范围，会根据<code>RooRealVar</code>中定义的变量的范围自动设置，当然你也可以重新设置范围。另外，将gauss画在框架中时，也不用说明gauss是x的函数，可以在框架中找到这个信息，就很智能。</p>
 <p>一个框架可以可视化多个对象（曲线，直方图），我们可以画两个不同sigma值的高斯曲线</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C">RooPlot* xframe = x.frame() ; <br>gauss.plotOn(xframe) ; <br>sigma = <span class="hljs-number">2</span> ; <br>gauss.plotOn(xframe,LineColor(kRed)) ; <br>xframe-&gt;Draw(); <br></code></pre></td></tr></table></figure>
 
 <p>这个例子中，在画完第一个gauss图像之后，我用赋值运算符改变了<code>RooRealVar</code>sigma的值。第二条曲线的颜色通过添加<code>LineColor(kRed)</code>参数传递给plotOn()变为红色。LineColor 是“命名参数”的一个示例。命名参数贯穿整个 RooFit 的使用，它提供一种方便且可读的方式来修改一些默认值。命名参数将在后面的部分中更详细地介绍。第二个代码片段的输出如图 2 所示。</p>
-<p><img src="/postfigure/roofit_manual/image-20241128123231407.png" srcset="/img/loading.gif" lazyload alt="image-20241128123231407"></p>
+<p><img src="/postfigure/roofit_manual/image-20241230195113004.png" srcset="/img/loading.gif" lazyload></p>
 <center>
-figure 2 不同宽度的高斯pdf
+Figure 2 - 不同宽度的高斯pdf
 </center>
 
 <p>这个例子同时也展示了plotOn()方法会对PDF进行一个“冻结”的快照，如果一个pdf在画进去之后改变了形状，之前已经画进去的曲线不会发生改变。图2还展示了无论数值如何，<code>RooGaussian</code>总是归一化的。</p>
-<h2 id="1-3-输入数据"><a href="#1-3-输入数据" class="headerlink" title="1.3 输入数据"></a>1.3 输入数据</h2><p>通常来说，数据有两类：未分bin的，用ROOT中的TTree类表示，和分bin的，用ROOT中的TH1，TH2，TH3表示。RooFit可以处理这两种数据。</p>
-<h3 id="1-3-1-分bin的数据（直方图）"><a href="#1-3-1-分bin的数据（直方图）" class="headerlink" title="1.3.1 分bin的数据（直方图）"></a>1.3.1 分bin的数据（直方图）</h3><p>在RooFit中，分bin的数据由<code>RooDataHist</code>类表示，你可以将任何ROOT直方图的内容导入到<code>RooDataHist</code>对象中</p>
+<h4 id="Summary-1"><a href="#Summary-1" class="headerlink" title="Summary 1"></a>Summary 1</h4><blockquote>
+<p> RooGaussian::RooGaussian (const char * name, const char * title, RooAbsReal &amp; _x, RooAbsReal &amp; _mean, RooAbsReal &amp; _sigma)</p>
+<p>RooRealVar::RooRealVar (const char * name,const char * title, double minValue, double maxValue,const char * unit &#x3D; “” )</p>
+<p>RooRealVar::RooRealVar (const char * name,const char * title, double value, double minValue, double maxValue,const char * unit &#x3D; “” )</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>; <span class="hljs-comment">//设置自变量x，并设置定义域为[-10,10]</span><br>RooRealVar <span class="hljs-title function_">mean</span><span class="hljs-params">(<span class="hljs-string">&quot;mean&quot;</span>,<span class="hljs-string">&quot;Mean of Gaussian&quot;</span>,<span class="hljs-number">0</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>; <span class="hljs-comment">//设置参数</span><br>RooRealVar <span class="hljs-title function_">sigma</span><span class="hljs-params">(<span class="hljs-string">&quot;sigma&quot;</span>,<span class="hljs-string">&quot;Width of Gaussian&quot;</span>,<span class="hljs-number">3</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;<br>RooGaussian <span class="hljs-title function_">gauss</span><span class="hljs-params">(<span class="hljs-string">&quot;gauss&quot;</span>,<span class="hljs-string">&quot;gauss(x,mean,sigma)&quot;</span>,x,mean,sigma)</span>; <span class="hljs-comment">//给RooGaussian传入三个参数，自变量x，中心值mean，宽度sigma</span><br>RooPlot* xframe = x.frame();	<span class="hljs-comment">//创建一个以x这个变量为坐标的空坐标图，这个会直接获取你之前设置的x变量的范围定义你的坐标的范围，这里就是 -10～10</span><br>gauss.plotOn(xframe);	<span class="hljs-comment">//将你之前创建的gauss函数画到你的坐标图中</span><br>xframe-&gt;Draw();	<span class="hljs-comment">//将你这个图通过TCanvas“打印”出来  </span><br>sigma = <span class="hljs-number">2</span>;	<br>gauss.plotOn(xframe,LineColor(kRed)) ; <br>xframe-&gt;Draw(); <br></code></pre></td></tr></table></figure>
+
+<center> Summary 1 - 构建一个高斯分布的概率密度函数</center>
+
+<h3 id="2-3-输入数据"><a href="#2-3-输入数据" class="headerlink" title="2.3 输入数据"></a>2.3 输入数据</h3><p>通常来说，数据有两类：未分bin的，用ROOT中的TTree类表示，和分bin的，用ROOT中的TH1，TH2，TH3表示。RooFit可以处理这两种数据。用做统计身高做例子的话，unbinned 就是把每位同学的身高都记录下来，binned 就是画成条形统计图，分为不同区间去计数，每个区间就是一个bin。</p>
+<h4 id="2-3-1-分bin的数据（直方图）"><a href="#2-3-1-分bin的数据（直方图）" class="headerlink" title="2.3.1 分bin的数据（直方图）"></a>2.3.1 分bin的数据（直方图）</h4><p>在RooFit中，分bin的数据由<code>RooDataHist</code>类表示，你可以将任何ROOT直方图的内容导入到<code>RooDataHist</code>对象中</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">TH1* hh = (TH1*) gDirectory-&gt;Get(<span class="hljs-string">&quot;ahisto&quot;</span>);<br>RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;<br>RooDataHist <span class="hljs-title function_">data</span><span class="hljs-params">(<span class="hljs-string">&quot;data&quot;</span>,<span class="hljs-string">&quot;dataset with x&quot;</span>,x,hh)</span>;<br></code></pre></td></tr></table></figure>
 
 <center>
 example 2 - 从TTree中导入数据并将其画在TCanvas上
+</center>
+
 
 <p>note：代码从当前目录 (gDirectory) 中获取名为 “ahisto” 的直方图，并将其强制转换为 TH1* 类型的指针。在ROOT中，TH1 是表示一维直方图的类。  </p>
 <p>创建了一个名为 “data” 的 RooDataHist 对象。它表示一个数据集，可以在RooFit中用于拟合或其他统计分析。<br>数据集用名称 “data” 和标题 “dataset with x” 构建。<br>此数据集根据变量 “x”（我们之前定义的变量）进行分箱，并使用先前获得的直方图 hh 填充。这意味着 hh 中的值将用于填充数据集的箱子。</p>
@@ -294,17 +300,33 @@ example 2 - 从TTree中导入数据并将其画在TCanvas上
 <p><code>RooDataHist</code>可以和gauss函数一样被plotOn在画布上。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">RooPlot* xframe = x.frame() ; <br>data.plotOn(xframe) ; <br>xframe-&gt;Draw() <br></code></pre></td></tr></table></figure>
 
-<p><img src="/postfigure/roofit_manual/image-13.png" srcset="/img/loading.gif" lazyload alt="figure 3"></p>
-<p>如果你仔细看图3你会发现，在低统计下的误差棒不是对称的。RooFit 默认显示泊松统计的 68% 置信区间，通常是不对称的，尤其是在低统计量下，如果直方图内容来自泊松过程，则可以更准确地反映每个箱中的统计不确定性。你可以选择将<code>DataError(RooAbsData::SumW2)</code>添加到<code>data.plotOn()</code>行来显示$\sqrt{N}$误差。这个选项只会影响数据集的可视化。</p>
-<h3 id="1-3-2-未分bin的数据（树trees）"><a href="#1-3-2-未分bin的数据（树trees）" class="headerlink" title="1.3.2 未分bin的数据（树trees）"></a>1.3.2 未分bin的数据（树trees）</h3><p>未分bin的数据可以以同样的方式导入到RooFit，并存储到<code>RooDataSet</code>的类中</p>
+<h4 id="2-3-2-未分bin的数据（树trees）"><a href="#2-3-2-未分bin的数据（树trees）" class="headerlink" title="2.3.2 未分bin的数据（树trees）"></a>2.3.2 未分bin的数据（树trees）</h4><p>未分bin的数据可以以同样的方式导入到RooFit，并存储到<code>RooDataSet</code>的类中</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">TTree* tree = (TTree*) gDirectory-&gt;Get(<span class="hljs-string">&quot;atree&quot;</span>);<br>RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;<br>RooDataSet <span class="hljs-title function_">data</span><span class="hljs-params">(<span class="hljs-string">&quot;data&quot;</span>,<span class="hljs-string">&quot;dataset with x&quot;</span>,tree,x)</span>;<br></code></pre></td></tr></table></figure>
 
 <p>在这个例子中，假设 tree 有一个名为“x”的分支，因为 RooDataSet 构造函数将从与作为参数传递的 RooRealVar 同名的树分支中导入数据。RooDataSet 可以从类型为 Double_t、Float_t、Int_t、UInt_t 和 Bool_t 的分支导入数据，用于一个 RooRealVar 可观测量。如果分支不是 Double_t 类型，则数据将转换为 Double_t，因为这是 RooRealVar 的内部表示形式。无法从数组分支（如 Double_t[10]）导入数据。可以将整数类型的数据作为离散值观测量导入到 RooFit 中，这在第8章中会更详细地解释。</p>
 <p>绘制未分 bin 的数据与绘制分 bin 的数据类似，不同之处在于现在您可以以任何您喜欢的 binning 来显示它，默认情况下是100个bins，下面设置了25个bins的情况。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C">RooPlot* xframe = x.frame();<br>data.plotOn(frame,Binning(<span class="hljs-number">25</span>));<br>frame-&gt;Draw();<br></code></pre></td></tr></table></figure>
 
-<h3 id="1-3-3-working-with-data"><a href="#1-3-3-working-with-data" class="headerlink" title="1.3.3 working with data"></a>1.3.3 working with data</h3><p>在一般情况下，在RooFit中处理分组数据和未分组数据非常相似，因为RooDataSet（用于未分组数据）和RooDataHist（用于分组数据）都继承自一个共同的基类RooAbsData，该基类定义了一个通用的抽象数据样本接口。除少数例外，所有RooFit方法都接受抽象数据集作为输入参数，使得分组和未分组数据可以互换使用。本节中的示例始终处理一维数据集。然而，RooDataSet和RooDataHist都可以处理任意维数的数据。在接下来的章节中，我们将重新讨论数据集并解释如何处理多维数据。</p>
-<h2 id="1-4-用模型拟合数据"><a href="#1-4-用模型拟合数据" class="headerlink" title="1.4 用模型拟合数据"></a>1.4 用模型拟合数据</h2><p>将模型拟合到数据中涉及从模型和数据构建检验统计量——最常见的选择是χ²和负对数似然——并针对所有未固定的参数最小化该检验统计量。RooFit中的默认拟合方法是对无分箱数据进行无分箱最大似然拟合，对分箱数据进行分箱最大似然拟合。</p>
+<h4 id="2-3-3-working-with-data"><a href="#2-3-3-working-with-data" class="headerlink" title="2.3.3 working with data"></a>2.3.3 working with data</h4><p>在一般情况下，在RooFit中处理分组数据和未分组数据非常相似，因为RooDataSet（用于未分组数据）和RooDataHist（用于分组数据）都继承自一个共同的基类RooAbsData，该基类定义了一个通用的抽象数据样本接口。除少数例外，所有RooFit方法都接受抽象数据集作为输入参数，使得分组和未分组数据可以互换使用。本节中的示例始终处理一维数据集。然而，RooDataSet和RooDataHist都可以处理任意维数的数据。在接下来的章节中，我们将重新讨论数据集并解释如何处理多维数据。</p>
+<h4 id="Summary-2"><a href="#Summary-2" class="headerlink" title="Summary 2"></a>Summary 2</h4><p>下载测试用的root文件<a href="/download/chapt2.root" class="download-button">chapt2.root</a> 里面包含了两种类型的数据：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">root -l chapt2.root</span> <br>root [0] <br>Attaching file chapt2.root as _file0...<br>(TFile *) 0x12758ae30<br>root [1] .ls<br>TFile**         chapt2.root<br> TFile*         chapt2.root<br>  KEY: RooDataSet       unbinnedData;1  Generated From gaussian PDF<br>  KEY: TH1F     binnedHist;1    Binned Histogram of X<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">10</span>)</span>;<br>TFile *file = TFile::Open(<span class="hljs-string">&quot;./chapt.root&quot;</span>); <span class="hljs-comment">//打开root文件</span><br>TH1F *hist = (TH1F*)file-&gt;Get(<span class="hljs-string">&quot;binnedData&quot;</span>); <span class="hljs-comment">//从文件中获取名为 &quot;binnedHist&quot; 的 TH1F 对象</span><br>RooDataHist <span class="hljs-title function_">binnedData</span><span class="hljs-params">(<span class="hljs-string">&quot;binnedData&quot;</span>, <span class="hljs-string">&quot;binnedData&quot;</span>, x, hist)</span>;<br>TCanvas* c1 = new TCanvas(<span class="hljs-string">&quot;c1&quot;</span>, <span class="hljs-string">&quot;binned Data&quot;</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>);<br>c1-&gt;cd();<br>RooPlot* x1frame = x.frame();<br>binnedData.plotOn(x1frame); <span class="hljs-comment">//生成这个数据的时候的bin是20</span><br>x1frame-&gt;Draw();<br><br>TCanvas* c2 = new TCanvas(<span class="hljs-string">&quot;c2&quot;</span>, <span class="hljs-string">&quot;unbinned Data&quot;</span>, <span class="hljs-number">800</span>, <span class="hljs-number">600</span>);<br>c2-&gt;cd();<br>RooDataSet* unbinnedData = (RooDataSet*)file-&gt;Get(<span class="hljs-string">&quot;unbinnedData&quot;</span>);  <span class="hljs-comment">// 从文件中获取名为 &quot;unbinnedData&quot; 的 RooDataSet 对象</span><br>RooPlot* x2frame = x.frame();<br>unbinnedData-&gt;plotOn(x2frame,Binning(<span class="hljs-number">40</span>),MarkerColor(kRed)); <span class="hljs-comment">//如果不设置bin的话默认画出的图的bin是100</span><br>x2frame-&gt;Draw();<br></code></pre></td></tr></table></figure>
+
+<p><img src="/postfigure/roofit_manual/image-20241230224832893.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /><img src="/postfigure/roofit_manual/image-20241230224846866.png" srcset="/img/loading.gif" lazyload style="zoom:50%;" /></p>
+<center> Summary 2 - 画出binned和unbinned的数据</center>
+
+<blockquote>
+<p><em>你也可以用下面的生成程序，自定义生成出你自己的root数据文件play一下</em></p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">10</span>)</span>;<br>RooRealVar <span class="hljs-title function_">mean</span><span class="hljs-params">(<span class="hljs-string">&quot;mean&quot;</span>, <span class="hljs-string">&quot;mean of gaussian&quot;</span>, <span class="hljs-number">0</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">10</span>)</span>;<br>RooRealVar <span class="hljs-title function_">sigma</span><span class="hljs-params">(<span class="hljs-string">&quot;sigma&quot;</span>, <span class="hljs-string">&quot;width of gaussian&quot;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">1</span>, <span class="hljs-number">3</span>)</span>;<br><br><span class="hljs-comment">// Create Gaussian PDF</span><br>RooGaussian <span class="hljs-title function_">gauss</span><span class="hljs-params">(<span class="hljs-string">&quot;gauss&quot;</span>, <span class="hljs-string">&quot;gaussian PDF&quot;</span>, x, mean, sigma)</span>;<br><br><span class="hljs-comment">// Generate unbinned data</span><br>RooDataSet* data = gauss.generate(x, <span class="hljs-number">500</span>);<br><br><span class="hljs-comment">// Generate binned data</span><br>TH1F* binnedData = new TH1F(<span class="hljs-string">&quot;binnedData&quot;</span>, <span class="hljs-string">&quot;Binned Histogram of X&quot;</span>, <span class="hljs-number">20</span>, <span class="hljs-number">-10</span>, <span class="hljs-number">10</span>);<br>data-&gt;fillHistogram(binnedData, RooArgList(x));<br><br><span class="hljs-comment">// Create a ROOT file to save the datasets</span><br>TFile <span class="hljs-title function_">outFile</span><span class="hljs-params">(<span class="hljs-string">&quot;./output.root&quot;</span>, <span class="hljs-string">&quot;RECREATE&quot;</span>)</span>;<br><br><span class="hljs-comment">// Write datasets to the file</span><br>data-&gt;Write(<span class="hljs-string">&quot;unbinnedData&quot;</span>);<br>binnedData-&gt;Write(<span class="hljs-string">&quot;binnedData&quot;</span>);<br><br><span class="hljs-comment">// Close the file</span><br>outFile.Close();<br></code></pre></td></tr></table></figure>
+
+<h4 id="Note-2"><a href="#Note-2" class="headerlink" title="Note 2"></a>Note 2</h4><ul>
+<li>当我们想进行一些精细的拟合的时候往往需要unbinned的拟合，因为binned的数据会丢失部分数据细节，但相对的，拟合速度也会下降</li>
+<li>unbinned的数据按道理来说像是分得无限细的binned的图，因此画出直方图的时候并不会这样操作，而是给他一个默认的bin值，从而更好地显示unbinned的数据。但是在拟合的时候还是会一个个数据点进行拟合。</li>
+<li>如果你仔细看画出来的图你会发现，在低统计下的误差棒不是对称的。RooFit 默认显示泊松统计的 68% 置信区间，通常是不对称的，尤其是在低统计量下，如果直方图内容来自泊松过程，则可以更准确地反映每个箱中的统计不确定性。你可以选择将<code>DataError(RooAbsData::SumW2)</code>添加到<code>data.plotOn()</code>行来显示$\sqrt{N}$误差。这个选项只会影响数据集的可视化。</li>
+</ul>
+<h3 id="2-4-用模型拟合数据"><a href="#2-4-用模型拟合数据" class="headerlink" title="2.4 用模型拟合数据"></a>2.4 用模型拟合数据</h3><p>将模型拟合到数据中涉及从模型和数据构建检验统计量——最常见的选择是χ²和负对数似然——并针对所有未固定的参数最小化该检验统计量。RooFit中的默认拟合方法是对无分箱数据进行无分箱最大似然拟合，对分箱数据进行分箱最大似然拟合。</p>
 <p>无论哪种情况，测试统计量都是由RooFit计算的，并且测试统计量的最小化是通过ROOT中的TMinuit实现的MINUIT来进行最小化和误差分析的。整个拟合过程的易用高级接口由类RooAbsPdf的fitTo()方法提供：<br><code>gauss.fitTo(data)</code><br>这条命令从高斯函数和给定的数据集中构建一个-log(L)函数，将其传递给MINUIT，MINUIT对其进行最小化并估计高斯参数的误差。fitTo()方法的输出在屏幕上产生熟悉的MINUIT输出：</p>
 <center>
 ![alt text](image-48.png)
@@ -331,17 +353,17 @@ example 2 - 从TTree中导入数据并将其画在TCanvas上
 <p>所有这些拟合配置信息都会自动传递给 MINUIT。可以通过传递给 <code>fitTo()</code> 命令的可选命名参数来控制 MINUIT 的高级方面。这个示例启用 MINOS 方法来计算不对称误差，并将 MINUIT 的详细级别设置为最低值：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">gauss.<span class="hljs-built_in">fitTo</span>(data, RooFit::<span class="hljs-built_in">Minos</span>(<span class="hljs-literal">true</span>), RooFit::<span class="hljs-built_in">PrintLevel</span>(<span class="hljs-number">-1</span>)) ;<br></code></pre></td></tr></table></figure>
 
-<h3 id="范围拟合"><a href="#范围拟合" class="headerlink" title="范围拟合"></a>范围拟合</h3><p>通过同样的接口可以影响似然函数的构建方式。要将似然（以及拟合）限制在指定范围内的事件子集上，可以这样做：</p>
+<h3 id="2-5-范围拟合"><a href="#2-5-范围拟合" class="headerlink" title="2.5 范围拟合"></a>2.5 范围拟合</h3><p>通过同样的接口可以影响似然函数的构建方式。要将似然（以及拟合）限制在指定范围内的事件子集上，可以这样做：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">gauss.<span class="hljs-built_in">fitTo</span>(data, <span class="hljs-built_in">Range</span>(<span class="hljs-number">-5</span>, <span class="hljs-number">5</span>)) ;<br></code></pre></td></tr></table></figure>
 
 <p>随后对该拟合的绘图默认只会显示拟合范围内的曲线。</p>
 <p>关于拟合中似然函数的构建、进阶使用选项以及 $\chi^2$ 拟合的构建细节将在第12章中详细介绍。所有可用的 <code>fitTo()</code> 命令参数的参考指南见附录E以及方法 <code>RooAbsPdf::fitTo()</code> 的<a target="_blank" rel="noopener" href="https://root.cern.ch/doc/v632/classRooAbsPdf.html#ab0721374836c343a710f5ff92a326ff5">在线代码文档</a>。</p>
-<h3 id="从模型生成数据"><a href="#从模型生成数据" class="headerlink" title="从模型生成数据"></a>从模型生成数据</h3><p>所有 RooFit 的概率密度函数 (p.d.f.) 都有一个通用接口，用于从其分布中生成事件。各种从分布中采样事件的技术已实现并在附录A中描述。RooAbsPdf 的内部逻辑会自动为每个使用案例选择最有效的技术。</p>
+<h3 id="2-6-从模型生成数据"><a href="#2-6-从模型生成数据" class="headerlink" title="2.6 从模型生成数据"></a>2.6 从模型生成数据</h3><p>所有 RooFit 的概率密度函数 (p.d.f.) 都有一个通用接口，用于从其分布中生成事件。各种从分布中采样事件的技术已实现并在附录A中描述。RooAbsPdf 的内部逻辑会自动为每个使用案例选择最有效的技术。</p>
 <p>最简单的形式中，可以从 p.d.f. 生成一个 RooDataSet，如下所示：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooDataSet* data = gauss.<span class="hljs-built_in">generate</span>(x, <span class="hljs-number">10000</span>) ;<br></code></pre></td></tr></table></figure>
 
 <p>这个示例创建了一个包含 10000 个事件的 RooDataSet，这些事件的可观测量 x 是从 p.d.f. gauss 中采样的。</p>
-<h3 id="参数和可观测量"><a href="#参数和可观测量" class="headerlink" title="参数和可观测量"></a>参数和可观测量</h3><p>在本章的简单示例中，我们一直使用高斯概率密度函数（p.d.f.），并且明确假设变量 (x) 是可观测量，而变量 (\mu)（均值）和 (\sigma)（标准差）是我们的参数。这一区分非常重要，因为它直接关系到对象的函数表达式：概率密度函数相对于其可观测量是单位归一化的，但相对于其参数则不是。</p>
+<h3 id="2-7-参数和可观测量"><a href="#2-7-参数和可观测量" class="headerlink" title="2.7 参数和可观测量"></a>2.7 参数和可观测量</h3><p>在本章的简单示例中，我们一直使用高斯概率密度函数（p.d.f.），并且明确假设变量 (x) 是可观测量，而变量 (\mu)（均值）和 (\sigma)（标准差）是我们的参数。这一区分非常重要，因为它直接关系到对象的函数表达式：概率密度函数相对于其可观测量是单位归一化的，但相对于其参数则不是。</p>
 <p>然而，RooFit 的 p.d.f 类本身在参数和可观测量之间没有固有的静态区分概念。这乍看之下可能令人困惑，但为我们在构建复合对象时提供了必要的灵活性。参数和可观测量之间的区分总是有的，但它是从每个使用上下文中动态产生的。以下示例展示了如何将高斯函数用作可观测量均值的 p.d.f.：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooDataSet* data = gauss.<span class="hljs-built_in">generate</span>(mean,<span class="hljs-number">1000</span>);<br>RooPlot* mframe = mean.<span class="hljs-built_in">frame</span>();<br>data-&gt;<span class="hljs-built_in">plotOn</span>(mframe);<br>gauss.<span class="hljs-built_in">plotOn</span>(mframe);<br></code></pre></td></tr></table></figure>
 
@@ -351,7 +373,7 @@ example 2 - 从TTree中导入数据并将其画在TCanvas上
 <p>然而，在高斯函数的所有三种可能的用例中，它相对于（隐含声明的）可观测量都是一个适当归一化的概率密度函数。这突显了 RooFit “动态可观测量”概念的重要后果：RooAbsPdf 对象没有唯一的返回值，它取决于可观测量的局部定义。通过在 <code>RooAbsPdf::getVal()</code> 中的一个显式的事后归一化步骤实现了这种功能，这个步骤对于每种可观测量的定义是不同的。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">Double_t gauss_raw = gauss.<span class="hljs-built_in">getVal</span>(); <span class="hljs-comment">// 未归一化的原始值</span><br>Double_t gauss_pdfX = gauss.<span class="hljs-built_in">getVal</span>(x); <span class="hljs-comment">// 用作 x 的 p.d.f 时的值</span><br>Double_t gauss_pdfM = gauss.<span class="hljs-built_in">getVal</span>(mean); <span class="hljs-comment">// 用作 mean 的 p.d.f 时的值</span><br>Double_t gauss_pdfS = gauss.<span class="hljs-built_in">getVal</span>(sigma); <span class="hljs-comment">// 用作 sigma 的 p.d.f 时的值</span><br></code></pre></td></tr></table></figure>
 
-<h3 id="计算模型上的积分"><a href="#计算模型上的积分" class="headerlink" title="计算模型上的积分"></a>计算模型上的积分</h3><p>在 RooFit 中，概率密度函数（p.d.f.）和函数的积分被表示为独立的对象。因此，与其将积分定义为一个动作，不如说积分是通过一个继承自 RooAbsReal 的对象来定义的，其值是通过积分操作计算得到的。这样的对象可以通过 <code>createIntegral()</code> 方法或 RooAbsReal 来构造。</p>
+<h3 id="2-8-计算模型上的积分"><a href="#2-8-计算模型上的积分" class="headerlink" title="2.8 计算模型上的积分"></a>2.8 计算模型上的积分</h3><p>在 RooFit 中，概率密度函数（p.d.f.）和函数的积分被表示为独立的对象。因此，与其将积分定义为一个动作，不如说积分是通过一个继承自 RooAbsReal 的对象来定义的，其值是通过积分操作计算得到的。这样的对象可以通过 <code>createIntegral()</code> 方法或 RooAbsReal 来构造。</p>
 <p>例如：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooAbsReal* intGaussX = gauss.<span class="hljs-built_in">createIntegral</span>(x);<br></code></pre></td></tr></table></figure>
 
@@ -374,14 +396,14 @@ example 2 - 从TTree中导入数据并将其画在TCanvas上
 <li>无需因式分解的参数。</li>
 <li>无设置的函数归一化。</li>
 </ul>
-<h3 id="归一化概率密度函数-p-d-f"><a href="#归一化概率密度函数-p-d-f" class="headerlink" title="归一化概率密度函数(p.d.f.)"></a>归一化概率密度函数(p.d.f.)</h3><p>也可以构造归一化p.d.f.的积分：</p>
+<h3 id="2-9-归一化概率密度函数-p-d-f"><a href="#2-9-归一化概率密度函数-p-d-f" class="headerlink" title="2.9 归一化概率密度函数(p.d.f.)"></a>2.9 归一化概率密度函数(p.d.f.)</h3><p>也可以构造归一化p.d.f.的积分：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooAbsReal* intGaussX = gauss.<span class="hljs-built_in">createIntegral</span>(x,<span class="hljs-built_in">NormSet</span>(x)) ;<br></code></pre></td></tr></table></figure>
 
 <p>这个例子并没有太大实际用途，因为它总是返回1，但使用相同的接口，也可以在观测变量的预定义子区间上进行积分，</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cpp">x.<span class="hljs-built_in">setRange</span>(<span class="hljs-string">&quot;signal&quot;</span>,<span class="hljs-number">-2</span>,<span class="hljs-number">2</span>) ;<br>RooAbsReal* intGaussX = gauss.<span class="hljs-built_in">createIntegral</span>(x,<span class="hljs-built_in">NormSet</span>(x),<span class="hljs-built_in">Range</span>(<span class="hljs-string">&quot;signal&quot;</span>)) ;<br></code></pre></td></tr></table></figure>
 
 <p>以提取模型在“信号”区间内的部分。诸如“信号”之类的命名区间的概念将在第3章和第7章详细阐述。归一化p.d.f.积分的返回值自然位于[0,1]范围内。</p>
-<h3 id="累积分布函数"><a href="#累积分布函数" class="headerlink" title="累积分布函数"></a>累积分布函数</h3><p>积分p.d.f.的一种特殊形式是累积分布函数（c.d.f.），其定义如下，并且可以通过专门的方法createCdf()从任何p.d.f.构造：</p>
+<h3 id="2-10-累积分布函数"><a href="#2-10-累积分布函数" class="headerlink" title="2.10 累积分布函数"></a>2.10 累积分布函数</h3><p>积分p.d.f.的一种特殊形式是累积分布函数（c.d.f.），其定义如下，并且可以通过专门的方法createCdf()从任何p.d.f.构造：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooAbsReal* cdf = pdf-&gt;<span class="hljs-built_in">createCdf</span>(x) ;<br></code></pre></td></tr></table></figure>
 
 <p>图6展示了从高斯p.d.f.创建的c.d.f.的一个例子。对于这种形式的积分，createCdf()相对于createIntegral()的优势在于前者能够更有效地处理需要数值积分的p.d.f.：createIntegral()在一个或多个参数变化后会从头开始重新计算整个数值积分，而createCdf()则会缓存数值积分采样阶段的结果，只重新计算求和部分。有关积分和累积分布函数的更多细节见附录C。</p>
