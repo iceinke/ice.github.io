@@ -19,16 +19,16 @@
   <meta name="author" content="Feng Zhu">
   <meta name="keywords" content="">
   
-    <meta name="description" content="这个是roofit官网的使用手册的翻译和笔记。">
+    <meta name="description" content="这个是RooFit官网的使用手册的翻译和笔记。其中Summary和Note是基于我的经验总结，可以给予你一定的参考。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="roofit manual">
 <meta property="og:url" content="http://iceinke.github.io/2024/11/28/roofit_manual/index.html">
 <meta property="og:site_name" content="Feng Zhu&#39;s Blog">
-<meta property="og:description" content="这个是roofit官网的使用手册的翻译和笔记。">
+<meta property="og:description" content="这个是RooFit官网的使用手册的翻译和笔记。其中Summary和Note是基于我的经验总结，可以给予你一定的参考。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://iceinke.github.io/img/post13.jpg">
 <meta property="article:published_time" content="2024-11-28T04:16:27.498Z">
-<meta property="article:modified_time" content="2024-12-31T07:41:45.059Z">
+<meta property="article:modified_time" content="2024-12-31T09:10:00.508Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -241,7 +241,7 @@
                 <link rel="stylesheet" href="/css/downloadbutton.css">
 
 <p><a href="/download/roofit_manual.pdf" class="download-button">下载文章</a><br><a href="/download/RooFit_Users_Manual_v2.9.pdf" class="download-button">RooFit Manual</a></p>
-<h2 id="1-安装和设置roofit"><a href="#1-安装和设置roofit" class="headerlink" title="1 安装和设置roofit"></a>1 安装和设置roofit</h2><h3 id="1-1-安装root和roofit"><a href="#1-1-安装root和roofit" class="headerlink" title="1.1 安装root和roofit"></a>1.1 安装root和roofit</h3><p>roofit库是标准root发行版的一部分，并且预编译在二进制发行版中，可以通过<code>root.cern.ch</code>获取。如果您从源代码发行版编译 ROOT，则必须在运行 configure 时使用标志 –enable-roofit</p>
+<h2 id="1-安装和设置RooFit"><a href="#1-安装和设置RooFit" class="headerlink" title="1 安装和设置RooFit"></a>1 安装和设置RooFit</h2><h3 id="1-1-安装root和roofit"><a href="#1-1-安装root和roofit" class="headerlink" title="1.1 安装root和roofit"></a>1.1 安装root和roofit</h3><p>roofit库是标准root发行版的一部分，并且预编译在二进制发行版中，可以通过<code>root.cern.ch</code>获取。如果您从源代码发行版编译 ROOT，则必须在运行 configure 时使用标志 –enable-roofit</p>
 <h3 id="1-2-设置交互式root环境"><a href="#1-2-设置交互式root环境" class="headerlink" title="1.2 设置交互式root环境"></a>1.2 设置交互式root环境</h3><p>只要在命令行引用了 RooFit 类之一，ROOT 就会自动加载 RooFit 库 libRooFitCore 和 libRooFit。方便起见，建议你ROOT登录脚本中添加下面的命令<code>using namespace RooFit;</code>，这样你就能在命令行中使用RooFit命名空间中的辅助函数了。这个命令也会自动加载RooFit库。这篇指导的所有例子都是建立在你已经加载RooFit命名空间的基础上的。  </p>
 <blockquote>
 <p><code>using namespace RooFit;</code></p>
@@ -651,6 +651,63 @@ Figure 7 - 用 RooGenericPdf 自定义一个pdf并且不需要特意归一化
 
 <p>您可以将您在 makePdf() 调用中列出的所有符号作为 C++ 的 double 对象使用。由于 RooAbsPdf 对变量是否是观测量或参数没有固定的解释，因此在 evaluate() 中明确地对某个特定的观测量进行归一化没有必要或意义：evaluate() 的返回值总是在返回通过 RooAbsPdf::getVal() 之前，通过归一化积分进行后期归一化。默认情况下，这个归一化步骤是通过数值积分器完成的，但如果您知道如何在一个（或多个）观测量的选择下进行积分，您可以在 p.d.f. 中声明这个功能，并且在合适的时候会使用您的解析积分，而不是数值积分。</p>
 <p>您可以使用不同的选项调用 RooClassFactory::makePdf()，它会为解析积分接口生成框架代码。详细信息可以在 RooClassFactory 的 HTML 类文档中找到。关于如何编写 p.d.f. 类以支持解析积分和内部事件生成处理的更多信息，参见第 14 章。</p>
+<h4 id="4-3-3-自定义-p-d-f-对象的实例化方法（使用-RooClassFactory）"><a href="#4-3-3-自定义-p-d-f-对象的实例化方法（使用-RooClassFactory）" class="headerlink" title="4.3.3 自定义 p.d.f 对象的实例化方法（使用 RooClassFactory）"></a>4.3.3 自定义 p.d.f 对象的实例化方法（使用 <code>RooClassFactory</code>）</h4><p>RooClassFactory 的另一种操作模式是请求工厂立即编译并实例化一个基于给定变量对象集合的对象。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooAbsPdf* myPdf = RooClassFactory::<span class="hljs-built_in">makePdfInstance</span>(<span class="hljs-string">&quot;RooMyPdf&quot;</span>, <span class="hljs-string">&quot;sqrt(abs(x*alpha))+0.1&quot;</span>, <span class="hljs-built_in">RooArgSet</span>(x,alpha));<br></code></pre></td></tr></table></figure>
+
+<p>需要注意的是，这种调用方式与创建 <code>RooGenericPdf</code> 类型对象的方式非常相似：你提供一个包含 C++ 函数表达式的字符串和一组输入变量，工厂返回一个实现该函数形状的 <code>RooAbsPdf</code> 实例。两者的区别在于代码生成的方式：</p>
+<ul>
+<li><strong>RooGenericPdf</strong>：采用解释的方式。</li>
+<li><strong>RooClassFactory</strong>：采用编译的方式。</li>
+</ul>
+<p>具体选择哪种方式取决于使用场景：</p>
+<ul>
+<li><strong>RooClassFactory</strong> 方法会带来更快的执行速度，但每次宏运行时需要几秒钟的编译和链接代码的启动开销。</li>
+<li><strong>RooGenericPdf</strong> 方法几乎没有启动开销，但在绘图、事件生成和拟合的执行速度上会有所降低。</li>
+</ul>
+<h4 id="4-3-4-使用-RooClassFactory-编写新函数类"><a href="#4-3-4-使用-RooClassFactory-编写新函数类" class="headerlink" title="4.3.4 使用 RooClassFactory 编写新函数类"></a>4.3.4 使用 RooClassFactory 编写新函数类</h4><p>除了创建 p.d.f. 的框架代码，<code>RooClassFactory</code> 还可以为通用的实值函数生成框架代码。这些函数类是 <code>RooFit</code> 中继承自 <code>RooAbsReal</code> 的所有类。<code>RooFormulaVar</code> 就是一个通用实值函数的典型例子。</p>
+<p>与 p.d.f. 不同的是，<code>RooAbsReal</code> 类的对象不需要归一化到 1，也可以取负值。在以下两种情况下，编译自定义的实值函数是一个很好的选择：</p>
+<ol>
+<li>表达式较为复杂。</li>
+<li>性能要求较高。</li>
+</ol>
+<p>要为通用函数对象生成框架代码，可以使用 <code>RooClassFactory</code> 的 <code>makeFunction()</code> 方法。例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooClassFactory::<span class="hljs-built_in">makeFunction</span>(<span class="hljs-string">&quot;RooMyFunction&quot;</span>, <span class="hljs-string">&quot;x,b&quot;</span>);<br></code></pre></td></tr></table></figure>
+
+<p>该代码将创建一个通用函数类的框架代码，方便用户进行进一步的自定义和优化。</p>
+<h2 id="5-将一个-p-d-f-或函数与另一个-p-d-f-卷积"><a href="#5-将一个-p-d-f-或函数与另一个-p-d-f-卷积" class="headerlink" title="5 将一个 p.d.f. 或函数与另一个 p.d.f. 卷积"></a>5 将一个 p.d.f. 或函数与另一个 p.d.f. 卷积</h2><h3 id="5-1-引言"><a href="#5-1-引言" class="headerlink" title="5.1 引言"></a>5.1 引言</h3><p>在高能物理实验中，实验数据分布通常是由一个理论分布经过探测器响应函数修正后的结果。在最一般的情况下，这种分布可以用理论模型 $T(x,a) $ 描述粒子的基本物理分布和探测器响应函数$R(x,b)$ 描述探测器对粒子的测量误差或分辨率的卷积来描述：</p>
+<p>$M(x, a, b) &#x3D; T(x,a)\otimes R(x,b)&#x3D; \int^{+\infty}_{-\infty} T(x, a) , R(x - x’, b) , dx’$</p>
+<p>一个常见的例子是将 Breit-Wigner 理论模型与高斯探测器响应函数相卷积，其结果如图 15 所示。</p>
+<p><img src="/postfigure/roofit_manual/image-20241231163348286.png" srcset="/img/loading.gif" lazyload></p>
+<center>
+Figure 8 -  Breit-Wigner 理论模型与高斯探测器响应函数卷积
+</center>
+
+<p>通常，所得分布可能主要由探测器响应主导，此时 M(x,a,b)可以有效地用 R(x,b)近似（图 8-a）；或者主要由理论模型主导，此时 M(x,a,b)可以有效地用 T(x,a) 近似（图 8-c）。然而，当两种函数的效应具有相当的量级时（图 8-b），可能需要显式计算卷积积分。在本章节中，我们将解释如何在 RooFit 中计算此类卷积。</p>
+<h4 id="5-1-1-卷积的计算"><a href="#5-1-1-卷积的计算" class="headerlink" title="5.1.1 卷积的计算"></a>5.1.1 卷积的计算</h4><p>在概率密度函数中进行卷积计算通常在计算上具有一定的挑战性。仅在少数情况下，对于 $R(x)$ 和 $ T(x)$ 的特定选择，卷积分可以解析计算；对于所有其他情况，卷积积分需要在区间$[-\infty, \infty]$上进行数值积分。</p>
+<p>此外，对于概率密度函数，还需要进行显式的归一化步骤，因为两个在有限区域上归一化的概率密度函数的卷积并不一定自身归一化。因此，对于概率密度函数 $M$ 的表达式为：</p>
+<p>$M(x) &#x3D; T(x,a)\otimes R(x,b)&#x3D;\frac{\int_{-\infty}^\infty T(x, a) R(x - x’, b) dx’}{\int_{x_{min}}^{x_{max}} \int_{-\infty}^\infty T(x, a) R(x - x’, b) dx’ dx}$</p>
+<p>该归一化过程确保 $M(x)$ 满足概率密度函数的性质，即其在定义域上的积分为 1。</p>
+<h4 id="5-1-2-卷积计算的多种选择"><a href="#5-1-2-卷积计算的多种选择" class="headerlink" title="5.1.2 卷积计算的多种选择"></a>5.1.2 卷积计算的多种选择</h4><p>RooFit 提供了三种方法来表示卷积概率密度函数：</p>
+<ol>
+<li>使用傅里叶变换进行数值卷积计算。  </li>
+<li>使用直接积分进行数值卷积计算。  </li>
+<li>针对特定概率密度函数的解析卷积计算。</li>
+</ol>
+<h2 id="6-构建多维模型"><a href="#6-构建多维模型" class="headerlink" title="6 构建多维模型"></a>6 构建多维模型</h2><h3 id="6-1-引言"><a href="#6-1-引言" class="headerlink" title="6.1 引言"></a>6.1 引言</h3><p>许多数据分析问题涉及不止一个观测量。当观测量之间的相关性包含大量信息时，从这些分布中提取信息可能会变得复杂。为了解决这样的多变量问题，通常使用两种主要方法。</p>
+<p>第一种方法是使用机器学习的多变量分析（MVA）来构造一个一维的判别量（discriminant），尽可能捕获多维分布中包含的信息。这种方法功能强大且易于管理，得益于像 TMVA 这样的工具，它为各种技术（例如神经网络、提升决策树（Boosted Decision Trees）、支持向量机（SVM）等）提供了统一的训练和应用接口。最终的拟合通常在判别量或未用于判别量的一剩余观测量上进行，以提取最终结果。</p>
+<p>另一种方法是为所有输入观测量构建一个显式的多维信号和背景描述，形式为多维似然分布。这种方法较少依赖自动化，除非所有观测量都是不相关的，但理论上它的能力不低于 Neyman-Pearson 引理所给出的任何多变量分布的最优判别量：</p>
+<p>$D(\vec{x}) &#x3D; \frac{S(\vec{x})}{B(\vec{x})}$</p>
+<p>其中S(x)和B(x)分别是真正的信号和背景分布。当经验分布S(x)和B(x)与真实分布匹配时，可达到上述最优判别量。这种方法的挑战来自两个方面: 需要对预期分布的形状有深入的了解，需要找到一个能够描述该多维分布的显式公式。第一个挑战实际上是这种方法的一个特性：如果处理得当，模型中仅包含您能够很好理解和解释的参数，且仅具有您认为相关的自由度。而机器学习训练的判别量参数可能从完全不可解释（例如神经网络权重）到部分可理解（例如未提升的决策树）不等。</p>
+<p>RooFit 在这一过程中扮演的角色是简化第二个挑战，即直观地为具有相关性的多维分布构建显式模型的能力。图 21 所示的二维模型便是 RooFit 功能的一个例子。该分布为：对于每个 ( y ) 值，( x ) 的分布是一个高斯分布，且高斯分布的均值依赖于 ( y )；同时，( y ) 的分布本身也是一个高斯分布。</p>
+<p>在纯 C++ 中，准确地描述这种分布及其相关性的二维概率密度函数 ( H(x, y) ) 是一项具有挑战性的任务。然而，在 RooFit 中，仅需四行代码即可按照此处描述的方式构建分布：编写一个条件概率密度函数 ( F(x|y) )，表示给定 ( y ) 值时 ( x ) 的分布；构建描述 ( y ) 分布的概率密度函数 ( G(y) )；将这两部分信息组合起来。RooFit 能够表示具有相关性的多维分布的能力来源于其灵活的概率密度函数归一化策略，该策略允许任意概率密度函数用作条件概率密度函数。</p>
+<p>在本节的其余部分，我们将指导您以多种方式构建多维模型的基本操作。多维模型中特定的使用问题将在第 7 章讨论。</p>
+<p>$X_μ&#x3D;(ct,x,y,z) ,$</p>
+<p>$s^2&#x3D;−(ct)^2+x^2+y^2+z^2(或 s^2&#x3D;η_{μν}X_μX_ν)$</p>
+<p>$P_μ&#x3D;(E&#x2F;c,p_x,p_y,p_z)$</p>
+<p><strong>横动量 pTp_TpT</strong>：粒子在垂直于束流方向的平面内的动量分量。</p>
+<p><strong>赝快度 η</strong>：用来描述粒子在束流方向的分布。赝快度通过粒子的极角定义，为 $\eta &#x3D; -\ln\left(\tan\frac{\theta}{2}\right)$, 其中 θ\thetaθ 是粒子运动方向与束流方向的夹角。</p>
+<p><strong>方位角 ϕ</strong>：粒子在横截面平面（垂直于束流方向的平面）内的运动方向，与某参考方向（通常是 x-轴）的夹角，取值范围为 [0,2π)。</p>
+<p><strong>质量 m</strong>：粒子的静止质量。</p>
 
                 
               </div>
