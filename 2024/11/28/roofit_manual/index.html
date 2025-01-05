@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://iceinke.github.io/img/post13.jpg">
 <meta property="article:published_time" content="2024-11-28T04:16:27.498Z">
-<meta property="article:modified_time" content="2024-12-31T09:10:00.508Z">
+<meta property="article:modified_time" content="2025-01-01T14:24:54.169Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -230,7 +230,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2024年12月31日
+                    本文最后更新于 2025年1月1日
                   
                 
               </p>
@@ -365,11 +365,11 @@ Figure 3 - 拟合输出
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooDataSet* data = gauss.<span class="hljs-built_in">generate</span>(x, <span class="hljs-number">10000</span>) ;<br></code></pre></td></tr></table></figure>
 
 <p>这个示例创建了一个包含 10000 个事件的 RooDataSet，这些事件的可观测量 x 是从 p.d.f. gauss 中采样的。</p>
-<h3 id="2-6-参数和可观测量"><a href="#2-6-参数和可观测量" class="headerlink" title="2.6 参数和可观测量"></a>2.6 参数和可观测量</h3><p>在本章的简单示例中，我们一直使用高斯概率密度函数（p.d.f.），并且明确假设变量 (x) 是可观测量，而变量mean和sigma是我们的参数。这一区分非常重要，因为它直接关系到对象的函数表达式：概率密度函数相对于其可观测量是单位归一化的，但相对于其参数则不是。</p>
+<h3 id="2-6-参数和可观测量"><a href="#2-6-参数和可观测量" class="headerlink" title="2.6 参数和可观测量"></a>2.6 参数和可观测量</h3><p>在本章的简单示例中，我们一直使用高斯概率密度函数（p.d.f.），并且明确假设变量 $x$ 是可观测量，而变量mean和sigma是我们的参数。这一区分非常重要，因为它直接关系到对象的函数表达式：概率密度函数相对于其可观测量是单位归一化的，但相对于其参数则不是。</p>
 <p>然而，RooFit 的 p.d.f 类本身在参数和可观测量之间没有固有的静态区分概念。这乍看之下可能令人困惑，但为我们在构建复合对象时提供了必要的灵活性。参数和可观测量之间的区分总是有的，但它是从每个使用上下文中动态产生的。以下示例展示了如何将高斯函数用作可观测量均值的 p.d.f.：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooDataSet* data = gauss.<span class="hljs-built_in">generate</span>(mean,<span class="hljs-number">1000</span>);<br>RooPlot* mframe = mean.<span class="hljs-built_in">frame</span>();<br>data-&gt;<span class="hljs-built_in">plotOn</span>(mframe);<br>gauss.<span class="hljs-built_in">plotOn</span>(mframe);<br></code></pre></td></tr></table></figure>
 
-<p>鉴于高斯函数的数学表达式在 (x) 和 (m) 的互换下是对称的，因此不出所料，这在以 (x) 和 (\sigma) 为参数时，得到的是一个以 (m) 为可观测量的高斯分布。沿着同样的思路，也可以将高斯函数用作 (\sigma) 的 p.d.f.，以 (x) 和均值为参数。在许多情况下，不需要明确说明哪些变量是可观测量，因为其定义是从使用上下文中隐含地得出的。具体来说，只要一个使用上下文同时涉及 p.d.f. 和数据集，可观测量的隐含和自动定义是那些同时出现在数据集和 p.d.f. 定义中的变量。这种自动定义在拟合中很有效，因为拟合涉及一个显式的数据集，但也适用于绘图：RooPlot 框架变量始终被认为是可观测量。在其他所有涉及区分的上下文中，必须手动提供哪些变量被视为可观测量的定义。这就是为什么调用 <code>generate()</code> 时必须在每次调用中指定你认为的可观测量。</p>
+<p>鉴于高斯函数的数学表达式在 $x$ 和 $m$ 的互换下是对称的，因此不出所料，这在以 $x$ 和 $\sigma$ 为参数时，得到的是一个以 $m$ 为可观测量的高斯分布。沿着同样的思路，也可以将高斯函数用作 $\sigma$ 的 p.d.f.，以 $x$ 和均值为参数。在许多情况下，不需要明确说明哪些变量是可观测量，因为其定义是从使用上下文中隐含地得出的。具体来说，只要一个使用上下文同时涉及 p.d.f. 和数据集，可观测量的隐含和自动定义是那些同时出现在数据集和 p.d.f. 定义中的变量。这种自动定义在拟合中很有效，因为拟合涉及一个显式的数据集，但也适用于绘图：RooPlot 框架变量始终被认为是可观测量。在其他所有涉及区分的上下文中，必须手动提供哪些变量被视为可观测量的定义。这就是为什么调用 <code>generate()</code> 时必须在每次调用中指定你认为的可观测量。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs cpp">RooDataSet* data = gauss.<span class="hljs-built_in">generate</span>(x,<span class="hljs-number">10000</span>);<br></code></pre></td></tr></table></figure>
 
 <p>然而，在高斯函数的所有三种可能的用例中，它相对于（隐含声明的）可观测量都是一个适当归一化的概率密度函数。这突显了 RooFit “动态可观测量”概念的重要后果：RooAbsPdf 对象没有唯一的返回值，它取决于可观测量的局部定义。通过在 <code>RooAbsPdf::getVal()</code> 中的一个显式的事后归一化步骤实现了这种功能，这个步骤对于每种可观测量的定义是不同的。</p>
@@ -389,11 +389,11 @@ Figure 3 - 拟合输出
 
 <p>这一输出说明了以下几点：</p>
 <ul>
-<li>被积分的函数 ( g ) 和涉及的参数 ( $x$, $mean$, $sigma$ )。</li>
+<li>被积分的函数 $ g $ 和涉及的参数 $ $x$, $mean$, $sigma$ $。</li>
 <li>操作模式为解析积分（Analytic）。</li>
 <li>无需求和的离散参数。</li>
 <li>无需数值积分的参数。</li>
-<li>( x ) 参数使用了模式 1 的解析积分。</li>
+<li>$ x $ 参数使用了模式 1 的解析积分。</li>
 <li>雅可比矩阵中包含的参数为空。</li>
 <li>无需因式分解的参数。</li>
 <li>无设置的函数归一化。</li>
@@ -460,7 +460,7 @@ Figure 4 - 拟合曲线与累积积分曲线
 </ul>
 <h2 id="3-信号和背景-–-复合模型介绍"><a href="#3-信号和背景-–-复合模型介绍" class="headerlink" title="3 信号和背景 – 复合模型介绍"></a>3 信号和背景 – 复合模型介绍</h2><h3 id="3-1-简介"><a href="#3-1-简介" class="headerlink" title="3.1 简介"></a>3.1 简介</h3><p>数据模型通常用于描述包含多种事件假设的样本，例如信号和（一个或多个类型的）背景。为了描述这种性质的样本，可以构建一个复合模型。对于事件假设‘信号’和‘背景’，复合函数M(x)可以通过描述信号的函数S(x)和描述背景的函数B(x)构建，如下所示：</p>
 <p>$ M(x) &#x3D; fS(x) + (1 - f)B(x) $</p>
-<p>在这个公式中，( f ) 是样本中信号事件的比例。多个假设的通用表达式为：</p>
+<p>在这个公式中，$ f $ 是样本中信号事件的比例。多个假设的通用表达式为：</p>
 <p>$ M(x) &#x3D; \sum_{i&#x3D;1}^{N-1} f_i F_i(x) + \left(1 - \sum_{i&#x3D;1}^{N-1} f_i \right) F_N(x) $</p>
 <p>这种方式添加p.d.f.的一个特性是，M(x)不需要特意地归一化为1：如果S(x)和B(x)都是归一化为1的，那么通过这种构造，M(x)也是归一化的。RooFit提供了一个特殊的‘加法运算符’p.d.f.在<code>RooAddPdf</code>类中，以简化构建和使用这种复合p.d.f.。</p>
 <h4 id="3-1-1-扩展似然方法-extended-likelihood"><a href="#3-1-1-扩展似然方法-extended-likelihood" class="headerlink" title="3.1.1 扩展似然方法(extended likelihood)"></a>3.1.1 扩展似然方法(extended likelihood)</h4><p>测量结果通常以事件数而非事件比例的形式引用，因此，直接用信号和背景事件的数量而不是信号事件的比例（和总事件数）来表示数据模型是很有用的。具体表达如下：</p>
@@ -698,16 +698,53 @@ Figure 8 -  Breit-Wigner 理论模型与高斯探测器响应函数卷积
 <p>另一种方法是为所有输入观测量构建一个显式的多维信号和背景描述，形式为多维似然分布。这种方法较少依赖自动化，除非所有观测量都是不相关的，但理论上它的能力不低于 Neyman-Pearson 引理所给出的任何多变量分布的最优判别量：</p>
 <p>$D(\vec{x}) &#x3D; \frac{S(\vec{x})}{B(\vec{x})}$</p>
 <p>其中S(x)和B(x)分别是真正的信号和背景分布。当经验分布S(x)和B(x)与真实分布匹配时，可达到上述最优判别量。这种方法的挑战来自两个方面: 需要对预期分布的形状有深入的了解，需要找到一个能够描述该多维分布的显式公式。第一个挑战实际上是这种方法的一个特性：如果处理得当，模型中仅包含您能够很好理解和解释的参数，且仅具有您认为相关的自由度。而机器学习训练的判别量参数可能从完全不可解释（例如神经网络权重）到部分可理解（例如未提升的决策树）不等。</p>
-<p>RooFit 在这一过程中扮演的角色是简化第二个挑战，即直观地为具有相关性的多维分布构建显式模型的能力。图 21 所示的二维模型便是 RooFit 功能的一个例子。该分布为：对于每个 ( y ) 值，( x ) 的分布是一个高斯分布，且高斯分布的均值依赖于 ( y )；同时，( y ) 的分布本身也是一个高斯分布。</p>
-<p>在纯 C++ 中，准确地描述这种分布及其相关性的二维概率密度函数 ( H(x, y) ) 是一项具有挑战性的任务。然而，在 RooFit 中，仅需四行代码即可按照此处描述的方式构建分布：编写一个条件概率密度函数 ( F(x|y) )，表示给定 ( y ) 值时 ( x ) 的分布；构建描述 ( y ) 分布的概率密度函数 ( G(y) )；将这两部分信息组合起来。RooFit 能够表示具有相关性的多维分布的能力来源于其灵活的概率密度函数归一化策略，该策略允许任意概率密度函数用作条件概率密度函数。</p>
+<p>RooFit 在这一过程中扮演的角色是简化第二个挑战，即直观地为具有相关性的多维分布构建显式模型的能力。图 21 所示的二维模型便是 RooFit 功能的一个例子。该分布为：对于每个 $ y $ 值，$ x $ 的分布是一个高斯分布，且高斯分布的均值依赖于 $ y $；同时，$ y $ 的分布本身也是一个高斯分布。</p>
+<p>在纯 C++ 中，准确地描述这种分布及其相关性的二维概率密度函数 $ H(x, y) $ 是一项具有挑战性的任务。然而，在 RooFit 中，仅需四行代码即可按照此处描述的方式构建分布：编写一个条件概率密度函数 $ F(x|y) $，表示给定 $ y $ 值时 $ x $ 的分布；构建描述 $ y $ 分布的概率密度函数 $ G(y) $；将这两部分信息组合起来。RooFit 能够表示具有相关性的多维分布的能力来源于其灵活的概率密度函数归一化策略，该策略允许任意概率密度函数用作条件概率密度函数。</p>
 <p>在本节的其余部分，我们将指导您以多种方式构建多维模型的基本操作。多维模型中特定的使用问题将在第 7 章讨论。</p>
-<p>$X_μ&#x3D;(ct,x,y,z) ,$</p>
-<p>$s^2&#x3D;−(ct)^2+x^2+y^2+z^2(或 s^2&#x3D;η_{μν}X_μX_ν)$</p>
-<p>$P_μ&#x3D;(E&#x2F;c,p_x,p_y,p_z)$</p>
-<p><strong>横动量 pTp_TpT</strong>：粒子在垂直于束流方向的平面内的动量分量。</p>
-<p><strong>赝快度 η</strong>：用来描述粒子在束流方向的分布。赝快度通过粒子的极角定义，为 $\eta &#x3D; -\ln\left(\tan\frac{\theta}{2}\right)$, 其中 θ\thetaθ 是粒子运动方向与束流方向的夹角。</p>
-<p><strong>方位角 ϕ</strong>：粒子在横截面平面（垂直于束流方向的平面）内的运动方向，与某参考方向（通常是 x-轴）的夹角，取值范围为 [0,2π)。</p>
-<p><strong>质量 m</strong>：粒子的静止质量。</p>
+<h3 id="6-2-使用多维模型"><a href="#6-2-使用多维模型" class="headerlink" title="6.2 使用多维模型"></a>6.2 使用多维模型</h3><p>在深入探讨如何最佳构建多维模型之前，我们先简要概述一下RooFit的绘图、拟合和事件生成接口是如何扩展到具有多个观测量的模型的。为了说明所有基本概念，我们构造了一个在观测量x和y上的二维RooGenericPdf。我们选择了最简单的公式，因为多维概率密度函数（p.d.f.）的内部结构与绘图、拟合和生成接口无关：这些接口的工作方式不受模型结构的影响。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;  <br>RooRealVar <span class="hljs-title function_">y</span><span class="hljs-params">(<span class="hljs-string">&quot;y&quot;</span>,<span class="hljs-string">&quot;y&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>;  <br>RooRealVar <span class="hljs-title function_">a</span><span class="hljs-params">(<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-string">&quot;a&quot;</span>,<span class="hljs-number">5</span>)</span>;  <br>RooRealVar <span class="hljs-title function_">b</span><span class="hljs-params">(<span class="hljs-string">&quot;b&quot;</span>,<span class="hljs-string">&quot;b&quot;</span>,<span class="hljs-number">2</span>)</span>;  <br>RooGenericPdf <span class="hljs-title function_">f</span><span class="hljs-params">(<span class="hljs-string">&quot;f&quot;</span>,<span class="hljs-string">&quot;a*x*x+b*y*y-0.3*y*y*y&quot;</span>,RooArgSet(x,y,a,b))</span>;  <br></code></pre></td></tr></table></figure>
+
+<h4 id="6-2-1-评估"><a href="#6-2-1-评估" class="headerlink" title="6.2.1 评估"></a>6.2.1 评估</h4><p>在第2章中已经解释，当评估一个RooFit的概率密度函数时，必须明确指定哪些变量是观测量。如果有多个观测量，只需传递包含所有观测量的RooArgSet，而不是单个RooAbsArg：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C">f.getVal(RooArgSet(x,y));<br></code></pre></td></tr></table></figure>
+
+<h4 id="6-2-2-生成和拟合"><a href="#6-2-2-生成和拟合" class="headerlink" title="6.2.2 生成和拟合"></a>6.2.2 生成和拟合</h4><p>由于生成和拟合过程自然地定义了观测量，因此接口扩展到多个观测量的方式十分直接。在事件生成中，可以传递包含观测量的RooArgSet，而不是单个观测量；在拟合中，由于所传递的RooDataSet已经定义了观测量（在本例中为两个观测量），接口无需任何改变。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">// 生成一个二维数据集data(x,y)  </span><br>RooDataSet* data = f.generate(RooArgSet(x,y),<span class="hljs-number">10000</span>);  <br><span class="hljs-comment">// 将二维模型f(x,y)拟合到数据data(x,y)  </span><br>f.fitTo(*data); <br></code></pre></td></tr></table></figure>
+
+<h4 id="6-2-3-绘图"><a href="#6-2-3-绘图" class="headerlink" title="6.2.3 绘图"></a>6.2.3 绘图</h4><p>绘图接口依然保持不变，但现在可以为每个观测量单独生成一个图像：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs C"><span class="hljs-comment">// 绘制数据data(x,y)和模型f(x,y)的x分布  </span><br>RooPlot* framex = x.frame(); <br>data-&gt;plotOn(framex); <br>f.plotOn(framex);  <br><br><span class="hljs-comment">// 绘制数据data(x,y)和模型f(x,y)的y分布  </span><br>RooPlot* framey = y.frame(); <br>data-&gt;plotOn(framey); <br>f.plotOn(framey);  <br></code></pre></td></tr></table></figure>
+
+<p>上述例子的输出如图22所示。图22中的两个图像能直观地符合预期，这并非完全是偶然的，它反映了RooFit在后台为你完成的一些记录工作</p>
+<p>绘制数据十分简单：要获得数据data(x,y)的x分布，只需忽略y值，并用x值填充直方图。而绘制概率密度函数（p.d.f.）则稍微复杂一些：需要绘制gaussxy(x,y)在x或y上的投影，以得到与数据相同解释的分布。RooFit默认使用的技术是积分</p>
+<p>$ F_x(x;p) &#x3D; \int p(x, y;p) , dy $</p>
+<p>RooPlots的一个关键特性是，它会跟踪需要投影的观测量：如果你在x的RooPlot中绘制一个数据集D(x,y,z)，系统会记住观测量y和z的存在。任何随后在该图框上绘制的具有观测量y和&#x2F;或z的概率密度函数将自动在这些观测量上进行投影。关于任何投影积分的信息都会以消息的形式告知：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C">RooAbsReal::plotOn(fxy) plot on x integrates over <span class="hljs-title function_">variables</span> <span class="hljs-params">(y)</span>  <br><span class="hljs-title function_">RooAbsReal::plotOn</span><span class="hljs-params">(fxy)</span> plot on y integrates over <span class="hljs-title function_">variables</span> <span class="hljs-params">(x)</span><br></code></pre></td></tr></table></figure>
+
+<p>关于多维模型使用可能性的完整概述详见第7章。</p>
+<h3 id="6-3-模型构建策"><a href="#6-3-模型构建策" class="headerlink" title="6.3 模型构建策"></a>6.3 模型构建策</h3><p>现在我们回到本章的核心问题：多维模型的构建。前面部分所使用的整体多维模型在实际应用中很少有用。大多数多维模型是通过使用组合或乘积技术从低维模型构建而来的，如开篇部分描述的示例所示。我们将在这里简要比较这两种技术，并在后续部分详细探讨其技术细节。</p>
+<h4 id="6-3-1-乘积法"><a href="#6-3-1-乘积法" class="headerlink" title="6.3.1 乘积法"></a>6.3.1 乘积法</h4><p>乘积法是一种将两个或多个具有不同观测量的概率密度函数（p.d.f.）组合成一个更高维、无相关性的p.d.f.的直接方法：</p>
+<p>$C(x, y; a, b) &#x3D; A(x; a) \cdot B(y; b)$</p>
+<p>正交p.d.f.的乘积具有以下吸引人的性质：如果输入p.d.f.是归一化的，那么它们的乘积也是归一化的：</p>
+<p>$\int \int C(x, y) , dx y &#x3D; \int \int A(x) B(y)dxdy&#x3D; \int A(x) , dx \cdot \int B(y) , dy &#x3D; 1$</p>
+<h4 id="6-3-2-组合法"><a href="#6-3-2-组合法" class="headerlink" title="6.3.2 组合法"></a>6.3.2 组合法</h4><p>组合技术通过用至少一个新观测量的函数替换某个参数来构造多维模型。例如，给定一个以观测量 x 为自变量的高斯函数 $\text{Gauss}(x; m, \sigma)$ ，可以通过以下方式创建一个以 x 和 y 为观测量的二维p.d.f.  ：</p>
+<p>$F(x,y;  m,\sigma,a) &#x3D; \text{gauss}(x, M(y), \sigma)$ 其中 $M(y)&#x3D;m+a \cdot y$</p>
+<p>我们在第4章已经见过这种技术，当时我们用它来调整现有形状的参数化。这里唯一新增的概念在于其解释：并没有什么限制新引入的变量 y 不能作为观测量使用，因此实际上我们将一维高斯p.d.f.扩展为一个基于第二个观测量 y 的均值偏移的二维高斯函数。</p>
+<p>组合法的一个重要优势是，它可以简单地引入观测量之间的相关性，这是乘积法无法直接实现的。</p>
+<h4 id="6-3-3-组合与乘积的结合"><a href="#6-3-3-组合与乘积的结合" class="headerlink" title="6.3.3 组合与乘积的结合"></a>6.3.3 组合与乘积的结合</h4><p>尽管组合法能够生成功能完善的多维p.d.f.并能很好地控制相关性，但通常不能很好地控制新引入的观测量的分布。在上述代码示例中， x 的分布及其如何随 y 变化是明确的，但 y 本身的分布并不清晰。因此，组合法生成的p.d.f.通常用作条件p.d.f. F(x|y) 而不是联合p.d.f. F(x, y) 。随后，再与一个独立的p.d.f. G(y) 相乘，形成一个良好控制的二维模型：$H(x, y) &#x3D; F(x|y) \cdot G(y)$</p>
+<p>这种方法结合了两种技术的优势：组合法用于引入相关性，而乘积法用于生成良好控制的观测量分布。</p>
+<h3 id="6-4-通过乘积构造多维模型-Multiplication"><a href="#6-4-通过乘积构造多维模型-Multiplication" class="headerlink" title="6.4 通过乘积构造多维模型(Multiplication)"></a>6.4 通过乘积构造多维模型(Multiplication)</h3><p>我们通常使用乘积去构建多维函数模型</p>
+<h4 id="6-4-1-RooProdPdf类"><a href="#6-4-1-RooProdPdf类" class="headerlink" title="6.4.1 RooProdPdf类"></a>6.4.1 <code>RooProdPdf</code>类</h4><p>在RooFit中，任何形式的概率密度函数（p.d.f.）乘积都通过RooProdPdf类构造。以下是一个简单示例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs C">RooRealVar <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-string">&quot;x&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>; <br>RooRealVar <span class="hljs-title function_">meanx</span><span class="hljs-params">(<span class="hljs-string">&quot;meanx&quot;</span>,<span class="hljs-string">&quot;mean of x&quot;</span>,<span class="hljs-number">0</span>)</span>;  <br>RooRealVar <span class="hljs-title function_">sigmax</span><span class="hljs-params">(<span class="hljs-string">&quot;sigmax&quot;</span>,<span class="hljs-string">&quot;sigma of x&quot;</span>,<span class="hljs-number">2</span>)</span>;  <br>RooGaussian <span class="hljs-title function_">gx</span><span class="hljs-params">(<span class="hljs-string">&quot;gx&quot;</span>,<span class="hljs-string">&quot;Gaussian for x&quot;</span>,x,meanx,sigmax)</span>; <br><br>RooRealVar <span class="hljs-title function_">y</span><span class="hljs-params">(<span class="hljs-string">&quot;y&quot;</span>,<span class="hljs-string">&quot;y&quot;</span>,<span class="hljs-number">-10</span>,<span class="hljs-number">10</span>)</span>; <br>RooRealVar <span class="hljs-title function_">meany</span><span class="hljs-params">(<span class="hljs-string">&quot;meany&quot;</span>,<span class="hljs-string">&quot;mean of y&quot;</span>,<span class="hljs-number">0</span>)</span>; <br>RooRealVar <span class="hljs-title function_">sigmay</span><span class="hljs-params">(<span class="hljs-string">&quot;sigmay&quot;</span>,<span class="hljs-string">&quot;sigma of y&quot;</span>,<span class="hljs-number">2</span>)</span>;  <br>RooGaussian <span class="hljs-title function_">gy</span><span class="hljs-params">(<span class="hljs-string">&quot;gy&quot;</span>,<span class="hljs-string">&quot;Gaussian for y&quot;</span>,y,meany,sigmay)</span>;  <br><br>RooProdPdf <span class="hljs-title function_">gaussxy</span><span class="hljs-params">(<span class="hljs-string">&quot;gaussxy&quot;</span>,<span class="hljs-string">&quot;gx*gy&quot;</span>,RooArgSet(gx,gy))</span>;<br></code></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们通过RooProdPdf将两个一维高斯p.d.f. gx 和 gy 相乘，构造了一个二维p.d.f. gaussxy 。这种乘积p.d.f.可以像z之前的整体p.d.f. f 一样用于拟合和生成。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C">RooDataSet* data = gaussxy.generate(RooArgSet(x,y),<span class="hljs-number">10000</span>) ;<br>gaussxy.fitTo(*data) ;<br><br>RooPlot* framex = x.frame() ;<br>data-&gt;plotOn(framex) ;<br>gaussxy.plotOn(framex) ;<br><br>RooPlot* framey = y.frame() ;<br>data-&gt;plotOn(framey) ;<br>gaussxy.plotOn(framey) ;<br></code></pre></td></tr></table></figure>
+
+<p>RooProdPdf类能够将任意数量的组件相乘。在此示例中，我们将两个一维p.d.f.相乘，但同样可以组合例如7个一维p.d.f.或2个五维p.d.f.。</p>
+<h4 id="6-4-2-内部实现"><a href="#6-4-2-内部实现" class="headerlink" title="6.4.2 内部实现"></a>6.4.2 内部实现</h4><p>尽管拟合、绘图和事件生成接口与整体p.d.f.的接口看起来相同，但对无相关性p.d.f.的乘积操作，其背后的实现与整体模型存在显著差异。首先，对于正交p.d.f.的乘积，不需要显式计算归一化，因为它们通过构造自然归一化：</p>
+<p>$\int \int C(x, y) , dx y &#x3D; \int \int A(x) B(y)dxdy&#x3D; \int A(x) , dx \cdot \int B(y) , dy &#x3D; 1$</p>
+<p>在绘图中，投影积分可以按照类似的方法简化</p>
+<p>$\int C(x, y) , dy&#x3D;\int A(x) B(y)dy &#x3D; A(x) \cdot \int B(y) , dy &#x3D; A(x)$</p>
+<p>这种简化是通过对输入的RooProdPdf结构进行逻辑推导，而不是通过强制计算实现的。</p>
+<p>事件生成同样利用了因子化的性质。在 C(x, y) 的示例中， x 和 y 的分布可以分别从 A(x) 和 B(y) 独立采样，然后再将结果组合，而不需要对联合分布直接采样。这种方法不仅减少了问题的维度，还允许将观测量的生成委托给组件p.d.f.，而这些组件可能实现了一种比默认的接受&#x2F;拒绝采样更高效的内部生成器。如图24所示，该分布生成过程充分体现了这种优化的优点：通过分解联合分布，可以高效生成所需的多维数据集。</p>
 
                 
               </div>
@@ -733,6 +770,12 @@ Figure 8 -  Breit-Wigner 理论模型与高斯探测器响应函数卷积
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2025/01/05/physics/" title="Brief Introduction to Particle Physics">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Brief Introduction to Particle Physics</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
