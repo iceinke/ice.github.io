@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://iceinke.github.io/img/post13.jpg">
 <meta property="article:published_time" content="2024-11-28T04:16:27.498Z">
-<meta property="article:modified_time" content="2025-01-18T12:51:04.555Z">
+<meta property="article:modified_time" content="2025-01-18T13:20:49.183Z">
 <meta property="article:author" content="Feng Zhu">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary_large_image">
@@ -730,15 +730,14 @@ Figure 9 -  Breit-Wigner 理论模型与高斯探测器响应函数卷积
 <li>针对特定概率密度函数的解析卷积计算。</li>
 </ol>
 <h3 id="5-2-数值卷积与傅里叶变换"><a href="#5-2-数值卷积与傅里叶变换" class="headerlink" title="5.2 数值卷积与傅里叶变换"></a>5.2 数值卷积与傅里叶变换</h3><p>对于大多数应用，使用傅里叶变换空间计算的数值卷积在灵活性、精度和计算强度之间提供了最佳的权衡。为了更好地理解使用离散傅里叶变换计算卷积的特点，我们首先简要介绍一下基础数学。</p>
-<h4 id="5-2-1-圆卷积定理和离散傅里叶变换"><a href="#5-2-1-圆卷积定理和离散傅里叶变换" class="headerlink" title="5.2.1 圆卷积定理和离散傅里叶变换"></a>5.2.1 圆卷积定理和离散傅里叶变换</h4><p>圆卷积定理指出，两个系数序列$ x_i$ 和 $y_i$ 在空间域的卷积可以通过在频率域中将系数进行简单的乘法运算来计算，即：</p>
-<p>$\left( y * x \right)n &#x3D; \sum{m&#x3D;0}^{n-1} x_m y_{n-m}$</p>
+<h4 id="5-2-1-圆卷积定理和离散傅里叶变换"><a href="#5-2-1-圆卷积定理和离散傅里叶变换" class="headerlink" title="5.2.1 圆卷积定理和离散傅里叶变换"></a>5.2.1 圆卷积定理和离散傅里叶变换</h4><p>圆卷积定理指出，两个系数序列$ x_i$ 和 $y_i$ 在空间域的卷积可以通过在频率域中将系数进行简单的乘法运算来计算，即：$(x \otimes y)<em>{n} \underset{F}{\Leftrightarrow}\left(x</em>{k} \cdot y_{k}\right)$</p>
 <p>该定理使得我们可以在不显式计算积分的情况下计算卷积。缺点是它需要傅里叶变换和离散输入数据。然而，实际上，这些问题比在开放域上进行数值积分要更容易解决。该定理的另一个特点是，对于有限的 n，卷积观察量被视为周期性的，这在某些应用中可能是需要的，在其他情况下则可能不需要。我们稍后会回到这一点。</p>
 <p>为了能够使用离散傅里叶变换，所有连续的输入函数必须被采样成离散的分布：</p>
-<p>$x_i &#x3D; x(i \Delta x)$</p>
+<p>$F(x) \underset{sampling}{\Longrightarrow } x_i $</p>
 <p>任何这样的离散分布 x_i 都可以通过傅里叶变换在频率域中表示为等数量的系数 X_i：</p>
-<p>X_n &#x3D; \sum_{k&#x3D;0}^{n-1} x_k e^{-\frac{2\pi i}{n} k n}</p>
+<p>$X_k &#x3D; \sum_{n&#x3D;0}^{N-1} x_n e^{-\frac{2\pi i}{N} k n}$</p>
 <p>空间域的系数 x_i 和频率域的系数 X_i 通常都是复数。如果输入系数 x_i 是实数（如从概率密度函数采样时的情况），则频率域的系数 X_i 会展示对称性，即 X_{n-k} &#x3D; X_k^*。相反，频率域中的分布可以通过反傅里叶变换（逆变换）转换回空间域中的分布：</p>
-<p>x_k &#x3D; \frac{1}{n} \sum_{n&#x3D;0}^{n-1} X_n e^{\frac{2\pi i}{n} k n}</p>
+<p>$x_k &#x3D; \frac{1}{n} \sum_{n&#x3D;0}^{n-1} X_n e^{\frac{2\pi i}{n} k n}$</p>
 <p>反变换的空间域系数 x_k 通常是复数，除非频率域的系数 X_n 满足对称性 X_{n-k} &#x3D; X_k^*，此时所有 x_k 都是实数。</p>
 <p>RooFFTConvPdf 类</p>
 <p>RooFFTConvPdf 类实现了以下算法，用于计算类型为 M(x) &#x3D; T(x) * R(x) 的圆卷积：</p>
